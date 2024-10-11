@@ -1,0 +1,13 @@
+[MASTER]
+load-plugins=pylint_django
+django-settings-module=api.settings.development
+
+
+[FORMAT]
+max-line-length=120
+
+[MESSAGES CONTROL]
+disable=missing-docstring,invalid-name,invalid-overridden-method
+
+# [DESIGN]
+# max-parents=13
