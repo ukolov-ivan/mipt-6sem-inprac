@@ -53,7 +53,7 @@ jobs:
         docker load --input /tmp/myimage.tar
         docker image ls -a
 
-    -name: Lint and format
+    - name: Lint and format
       run: |
         cd frontend
         npm run lint
