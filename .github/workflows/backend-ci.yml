@@ -41,10 +41,10 @@ jobs:
         touch .env
     
     - name: Setup secrets
-      run: 'echo SECRET_KEY="$SECRET_KEY" > .env'
-      shell: bash
-      env:
-        SECRET_KEY: ${{ secrets.SECRET_KEY }}
+      run: 'echo DJ_SECRET_KEY=${{ secrets.DJ_SECRET_KEY }} >> .env'
+      # shell: bash
+      # env:
+      #   SECRET_KEY: ${{ secrets.SECRET_KEY }}
 
     - name: debug log
       run: |

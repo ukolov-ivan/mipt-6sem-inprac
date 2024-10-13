@@ -7,8 +7,7 @@ ARG APP_HOME=/app
 WORKDIR ${APP_HOME}
 
 COPY ./frontend/package*.json .
-# ! Debug
-# RUN ls -a
+
 COPY . .
 RUN npm install
 
