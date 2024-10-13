@@ -39,8 +39,9 @@ jobs:
       run: |
         cd ./backend/
         touch .env
-        echo "$SECRET_KEY"
-        'echo SECRET_KEY="$SECRET_KEY" > .env'
+    
+    - name: Setup secrets
+      run: 'echo SECRET_KEY="$SECRET_KEY" > .env'
       shell: bash
       env:
         SECRET_KEY: ${{ secrets.SECRET_KEY }}
