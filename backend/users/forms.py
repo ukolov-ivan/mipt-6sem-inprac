@@ -6,8 +6,8 @@ from .models import User
 class CustomUserCreationForm(UserCreationForm):
     class Meta(UserCreationForm):
         model = User
-        fields = ["email", "username", "first_name", "last_name"] # type: ignore
-        error_class = "error" # type:ignore
+        fields = ["email", "username", "first_name", "last_name"]  # type: ignore
+        error_class = "error"  # type:ignore
 
 
 class CustomUserChangeForm(UserChangeForm):

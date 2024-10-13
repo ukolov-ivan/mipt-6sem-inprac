@@ -18,16 +18,12 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name="comment",
             name="author",
-            field=models.ForeignKey(
-                on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL
-            ),
+            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL),
         ),
         migrations.AddField(
             model_name="contributorship",
             name="user",
-            field=models.ForeignKey(
-                on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL
-            ),
+            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL),
         ),
         migrations.AddField(
             model_name="issue",
@@ -51,9 +47,7 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name="comment",
             name="issue",
-            field=models.ForeignKey(
-                on_delete=django.db.models.deletion.CASCADE, to="projects.issue"
-            ),
+            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to="projects.issue"),
         ),
         migrations.AddField(
             model_name="project",
@@ -67,23 +61,17 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name="project",
             name="owner",
-            field=models.ForeignKey(
-                on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL
-            ),
+            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL),
         ),
         migrations.AddField(
             model_name="issue",
             name="project",
-            field=models.ForeignKey(
-                on_delete=django.db.models.deletion.CASCADE, to="projects.project"
-            ),
+            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to="projects.project"),
         ),
         migrations.AddField(
             model_name="contributorship",
             name="project",
-            field=models.ForeignKey(
-                on_delete=django.db.models.deletion.CASCADE, to="projects.project"
-            ),
+            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to="projects.project"),
         ),
         migrations.AlterUniqueTogether(
             name="contributorship",
