@@ -15,8 +15,8 @@ ENV PYTHONDONTWRITEBYTECODE=1
 ENV PYTHONUNBUFFERED=1
 
 RUN pip3 install --upgrade pip
-COPY /backend/requirements.txt ${APP_HOME}/requirements.txt 
+COPY /backend/requirements.txt ./requirements.txt 
 RUN pip3 install -r requirements.txt
 
-COPY ./backend ./backend
+COPY ./backend .
 ENTRYPOINT ["./entrypoint.sh"]
