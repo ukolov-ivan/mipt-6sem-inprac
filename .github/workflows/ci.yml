@@ -86,8 +86,8 @@ jobs:
 
       - name: Load Docker images as artifacts
         run: |
-          gunzip -c backend:latest | docker load
-          gunzip -c frontend:latest | docker load
+          gunzip -c backend-image.tar.gz | docker load
+          gunzip -c frontend-image.tar.gz | docker load
         
       # TODO -- Replace with loading docker images from previous job 
       # - name: Set up Node.js
