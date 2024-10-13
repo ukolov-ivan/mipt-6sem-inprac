@@ -67,7 +67,7 @@ export const updateIssue = createAsyncThunk(
                 error.message ||
                 error.toString();
             return thunkAPI.rejectWithValue(message);
-        };
+        }
     }
 );
 

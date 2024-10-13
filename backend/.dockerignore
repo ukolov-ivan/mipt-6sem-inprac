@@ -1,3 +1,5 @@
+Dockerfile
+
 # Unit test / coverage reports
 htmlcov/
 .tox/
@@ -12,5 +14,6 @@ coverage.xml
 *.pyc
 __pycache__/
 
+**venv
 .env*
 db.sqlite3
