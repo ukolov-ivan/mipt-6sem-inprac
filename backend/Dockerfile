@@ -2,7 +2,7 @@ FROM python:3.10.0-slim
 
 ENV APP_HOME=/app
 RUN mkdir ${APP_HOME}
-RUN mkdir ${APP_HOME}/staticfiles
+RUN mkdir ${APP_HOME}/staticfiles && echo ${APP_HOME}
 WORKDIR $APP_HOME
 
 
@@ -14,7 +14,7 @@ RUN apt-get update \
 
 RUN pip3 install --upgrade pip
 
-COPY ./requirements.txt /${APP_HOME}/requirements.txt 
+COPY ./requirements.txt ${APP_HOME}/requirements.txt 
 
 RUN pip3 install -r requirements.txt
 
