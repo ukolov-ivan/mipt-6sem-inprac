@@ -30,7 +30,7 @@ jobs:
           --health-retries=5
 
     steps:
-      - name: Check out code
+      - name: Check out
         uses: actions/checkout@v2
 
       - name: Set up Python
@@ -45,8 +45,8 @@ jobs:
 
       - name: Build Docker images
         run: |
-          docker build -t ${{ github.repository_owner }}/backend:latest -f backend/Dockerfile .
-          docker build -t ${{ github.repository_owner }}/frontend:latest -f frontend/Dockerfile .
+          docker build --tag ${{ github.repository_owner }}/backend:latest --file backend/Dockerfile .
+          docker build --tag ${{ github.repository_owner }}/frontend:latest --file frontend/Dockerfile .
 
       - name: Save Docker images as artifacts
         run: |
@@ -103,7 +103,7 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v2
         with:
-          python-version: '3.9'
+          python-version: '3.10'
 
       - name: Install backend dependencies
         run: |
