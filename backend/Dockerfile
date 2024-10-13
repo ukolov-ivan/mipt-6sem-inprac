@@ -14,7 +14,7 @@ RUN apt-get update \
 
 RUN pip3 install --upgrade pip
 
-COPY requirements.txt ${APP_HOME}/requirements.txt 
+COPY /backend/requirements.txt ${APP_HOME}/requirements.txt 
 
 RUN pip3 install -r requirements.txt
 
