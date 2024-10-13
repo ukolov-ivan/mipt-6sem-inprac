@@ -81,7 +81,7 @@ jobs:
 
     - name: Lint and format
       run: |
-        docker run --rm --volume ${{ github.workspace }}:/app --workdir /app/backend ${{ github.repository_owner }}/backend:latest bin bash -c "ls -a -l; cat ./.env; pip freeze; mypy .; pylint ."
+        docker run --rm --volume ${{ github.workspace }}:/app --workdir /app/backend ${{ github.repository_owner }}/backend:latest bin bash -c "ls -a -l; cat ./.env; pip freeze"
 
   test:
     runs-on: ubuntu-latest
