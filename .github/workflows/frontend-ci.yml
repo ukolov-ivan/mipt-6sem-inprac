@@ -51,11 +51,10 @@ jobs:
       run: |
         docker load --input /tmp/frontend-image.tar
         docker image ls -a
-        npm list -g --depth=0
 
     - name: Lint and format
       run: |
-        docker run --rm -v ${{ github.workspace }}:/app -w /app/frontend ${{ github.repository_owner }}/frontend:latest npm list -g --depth=0;npm run lint
+        docker run --rm --volume ${{ github.workspace }}:/app --workdir /app/frontend ${{ github.repository_owner }}/frontend:latest realpath . && npm list -g --depth=0 && npm run lint
 
       # cd frontend
       # npm run lint
