@@ -54,8 +54,10 @@ jobs:
 
     - name: Lint and format
       run: |
-        cd frontend
-        npm run lint
+        docker run --rm -v ${{ github.workspace }}:/app -w /app/frontend ${{ github.repository_owner }}/frontend:latest npm run lint
+
+      # cd frontend
+      # npm run lint
 
   test:
     runs-on: ubuntu-latest
@@ -66,5 +68,6 @@ jobs:
 
     - name: Run frontend tests
       run: |
-        cd frontend
-        npm test
+        docker run --rm -v ${{ github.workspace }}:/app -w /app/frontend ${{ github.repository_owner }}/frontend:latest npm test
+      # cd frontend
+      # npm test
