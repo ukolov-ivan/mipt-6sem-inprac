@@ -8,7 +8,7 @@ WORKDIR ${APP_HOME}
 
 COPY ./frontend/package*.json .
 # ! Debug
-RUN ls -a
+# RUN ls -a
 COPY . .
 RUN npm install
 
