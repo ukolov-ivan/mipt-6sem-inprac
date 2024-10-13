@@ -71,9 +71,9 @@ jobs:
 
     - name: Lint and format
       run: |
-        cd backend
-        mypy .
-        pylint .
+#        cd backend
+        docker run --rm --volume ${{ github.workspace }}:/app --workdir /app/backend ${{ github.repository_owner }}/backend:latest mypy .
+        docker run --rm --volume ${{ github.workspace }}:/app --workdir /app/backend ${{ github.repository_owner }}/backend:latest pylint .
 
   test:
     runs-on: ubuntu-latest
