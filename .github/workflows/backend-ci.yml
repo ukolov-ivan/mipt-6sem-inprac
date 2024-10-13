@@ -64,6 +64,7 @@ jobs:
       run: |
         docker load --input /tmp/backend-image.tar
         docker image ls -a
+        pip freeze
 
     - name: Lint and format
       run: |

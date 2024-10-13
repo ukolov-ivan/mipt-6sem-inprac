@@ -50,6 +50,7 @@ jobs:
       run: |
         docker load --input /tmp/frontend-image.tar
         docker image ls -a
+        npm list -g --depth=0
 
     - name: Lint and format
       run: |
