@@ -46,6 +46,11 @@ jobs:
       env:
         SECRET_KEY: ${{ secrets.SECRET_KEY }}
 
+    - name: debug log
+      run: |
+        ls -a -l
+        cat .env
+
     - name: Set up Docker Buildx
       uses: docker/setup-buildx-action@v3
 
@@ -81,7 +86,7 @@ jobs:
 
     - name: Lint and format
       run: |
-        docker run --rm --volume ${{ github.workspace }}:/app --workdir /app/backend ${{ github.repository_owner }}/backend:latest bin bash -c "ls -a -l; cat ./.env; pip freeze"
+        docker run --rm --volume ${{ github.workspace }}:/app --workdir /app/backend ${{ github.repository_owner }}/backend:latest bin bash -c "ls -a -l; cat ./.env"
 
   test:
     runs-on: ubuntu-latest
