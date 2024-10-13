@@ -81,8 +81,8 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v2
 
-    - name: Run backend tests
+    - name: Run tests
       run: |
         cd backend
-        npm test
+        python manage.py test
       continue-on-error: true
