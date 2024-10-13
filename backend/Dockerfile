@@ -19,4 +19,4 @@ COPY /backend/requirements.txt ${APP_HOME}/requirements.txt
 RUN pip3 install -r requirements.txt
 
 COPY ./backend ./backend
-ENTRYPOINT ["${APP_HOME}/entrypoint.sh"]
+ENTRYPOINT ["./entrypoint.sh"]
