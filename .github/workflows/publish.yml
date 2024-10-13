@@ -7,10 +7,10 @@ on:
 
 jobs:
   backend:
-    uses: ./.github/workflows/backend-ci.yml@main
+    uses: ./.github/workflows/backend-ci.yml
 
   frontend:
-    uses: ./.github/workflows/backend-ci.yml@main
+    uses: ./.github/workflows/backend-ci.yml
 
   job3:
     runs-on: ubuntu-latest
