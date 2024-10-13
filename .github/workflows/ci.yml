@@ -30,7 +30,7 @@ jobs:
     #       --health-retries=5
 
     steps:
-      - name: Check out
+      - name: Checkout
         uses: actions/checkout@v2
 
       - name: Set up Python
@@ -70,9 +70,10 @@ jobs:
     runs-on: ubuntu-latest
     needs: build
     steps:
-      - name: Check out code
+      - name: Checkout
         uses: actions/checkout@v2
 
+      # TODO -- Replace with loading docker images from previous job 
       - name: Set up Node.js
         uses: actions/setup-node@v2
         with:
@@ -88,18 +89,35 @@ jobs:
           cd frontend
           npm run lint
 
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.10'
+
+      - name: Install backend dependencies
+        run: |
+          cd backend
+          pip install -r requirements.txt
+
       - name: Lint backend
         run: |
           cd backend
           mypy .
+          pylint .
+
+      - name: Format backend
+        run: |
+          cd backend
+          black --line-length 120 --check .
 
   test:
     runs-on: ubuntu-latest
     needs: lint
     steps:
-      - name: Check out code
+      - name: Checkout
         uses: actions/checkout@v2
 
+      # TODO -- Replace with loading docker images from previous job 
       - name: Set up Python
         uses: actions/setup-python@v2
         with:
