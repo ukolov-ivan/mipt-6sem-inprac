@@ -1,14 +1,14 @@
 name: CI Pipeline
 
 on:
-  pull_request:
-    branches:
-      - master
-      - release/*
-  push:
-    branches:
-      - master
-      - release/*
+  # pull_request:
+  #   branches:
+  #     - master
+  #     - release/*
+  # push:
+  #   branches:
+  #     - master
+  #     - release/*
   workflow_dispatch:
 
 jobs:
@@ -28,66 +28,111 @@ jobs:
     #       --health-interval=10s
     #       --health-timeout=5s
     #       --health-retries=5
-
+    
     steps:
-      - name: Checkout
-        uses: actions/checkout@v2
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
 
-      - name: Set up Python
-        uses: actions/setup-python@v2
+      # - name: Checkout
+      #   uses: actions/checkout@v2
+
+      # - name: Set up Python
+      #   uses: actions/setup-python@v2
+      #   with:
+      #     python-version: '3.10'
+
+      # - name: Install backend dependencies
+      #   run: |
+      #     cd backend
+      #     pip install -r requirements.txt
+      - name: Build and export backend
+        uses: docker/build-push-action@v6
         with:
-          python-version: '3.10'
-
-      - name: Install backend dependencies
-        run: |
-          cd backend
-          pip install -r requirements.txt
-
-      - name: Build Docker images
-        run: |
-          docker build --tag ${{ github.repository_owner }}/backend:latest --file backend/Dockerfile .
-          docker build --tag ${{ github.repository_owner }}/frontend:latest --file frontend/Dockerfile .
-
-      - name: Save Docker images artifacts
-        run: |
-          docker save ${{ github.repository_owner }}/backend:latest | gzip > backend_image.tar.gz
-          docker save ${{ github.repository_owner }}/frontend:latest | gzip > frontend_image.tar.gz
-
-      - name: Upload backend as artifact
+          tags: ${{ github.repository_owner }}/backend:latest
+          outputs: type=docker,dest=/tmp/backend-image.tar
+          file: backend/Dockerfile
+      
+      - name: Upload backend as an artifact
         uses: actions/upload-artifact@v4
         with:
           name: backend-image
-          path: backend_image.tar.gz
+          path: /tmp/backend-image.tar
 
-      - name: Upload frontend as artifact
+      - name: Build and export frontend
+        uses: docker/build-push-action@v6
+        with:
+          tags: ${{ github.repository_owner }}/frontend:latest
+          outputs: type=docker,dest=/tmp/frontend-image.tar
+          file: frontend/Dockerfile
+      
+      - name: Upload frontend as an artifact
         uses: actions/upload-artifact@v4
         with:
           name: frontend-image
-          path: frontend_image.tar.gz
+          path: /tmp/frontend-image.tar
+
+      # - name: Build Docker images
+      #   run: |
+      #     docker build --tag ${{ github.repository_owner }}/backend:latest --file backend/Dockerfile .
+      #     docker build --tag ${{ github.repository_owner }}/frontend:latest --file frontend/Dockerfile .
+
+      # - name: Save Docker images artifacts
+      #   run: |
+      #     docker save ${{ github.repository_owner }}/backend:latest |  backend_image.tar
+      #     docker save ${{ github.repository_owner }}/frontend:latest | frontend_image.tar
+
+      # - name: Upload backend as artifact
+      #   uses: actions/upload-artifact@v4
+      #   with:
+      #     name: backend-image
+      #     path: backend_image.tar
+
+      # - name: Upload frontend as artifact
+      #   uses: actions/upload-artifact@v4
+      #   with:
+      #     name: frontend-image
+      #     path: frontend_image.tar
 
   lint:
     runs-on: ubuntu-latest
     needs: build
     steps:
-      - name: Checkout
-        uses: actions/checkout@v2
-
       - name: Download backend as artifact
         uses: actions/download-artifact@v4
         with:
-          name: backend-image
-          path: backend_image.tar.gz
+          name: myimage
+          path: /tmp
+      
+      - name: Download backend as artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: myimage
+          path: /tmp
+
+      - name: Load image
+        run: |
+          docker load --input /tmp/myimage.tar
+          docker image ls -a
+
+      # - name: Checkout
+      #   uses: actions/checkout@v2
+
+      # - name: Download backend as artifact
+      #   uses: actions/download-artifact@v4
+      #   with:
+      #     name: backend-image
+      #     path: backend_image.tar
 
       - name: Download frontend as artifact
         uses: actions/download-artifact@v4
         with:
           name: frontend-image
-          path: frontend_image.tar.gz
+          path: frontend_image.tar
 
       - name: Load Docker images as artifacts
         run: |
-          gunzip -c backend-image.tar.gz | docker load
-          gunzip -c frontend-image.tar.gz | docker load
+          gunzip -c backend-image.tar | docker load
+          gunzip -c frontend-image.tar | docker load
         
       # TODO -- Replace with loading docker images from previous job 
       # - name: Set up Node.js
