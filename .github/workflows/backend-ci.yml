@@ -67,11 +67,10 @@ jobs:
       run: |
         docker load --input /tmp/backend-image.tar
         docker image ls -a
-        docker run --rm --volume ${{ github.workspace }}:/app --workdir /app/backend ${{ github.repository_owner }}/backend:latest pip freeze
 
     - name: Lint and format
       run: |
-#        cd backend
+        docker run --rm --volume ${{ github.workspace }}:/app --workdir /app/backend ${{ github.repository_owner }}/backend:latest pip freeze
         docker run --rm --volume ${{ github.workspace }}:/app --workdir /app/backend ${{ github.repository_owner }}/backend:latest mypy .
         docker run --rm --volume ${{ github.workspace }}:/app --workdir /app/backend ${{ github.repository_owner }}/backend:latest pylint .
 
@@ -83,6 +82,12 @@ jobs:
     steps:
     - name: Checkout
       uses: actions/checkout@v4
+
+    - name: Download as an artifact
+      uses: actions/download-artifact@v4
+      with:
+        name: backend-image
+        path: /tmp
 
     - name: Run tests
       run: |

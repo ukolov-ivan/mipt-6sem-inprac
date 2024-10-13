@@ -54,8 +54,9 @@ jobs:
 
     - name: Lint and format
       run: |
-        docker run --rm --volume ${{ github.workspace }}:/app --workdir /app/frontend ${{ github.repository_owner }}/frontend:latest ls
-
+        docker run --rm --volume ${{ github.workspace }}:/app --workdir /app/frontend ${{ github.repository_owner }}/frontend:latest cat package.json
+        docker run --rm --volume ${{ github.workspace }}:/app --workdir /app/frontend ${{ github.repository_owner }}/frontend:latest npm list -g --depth=0
+        docker run --rm --volume ${{ github.workspace }}:/app --workdir /app/frontend ${{ github.repository_owner }}/frontend:latest npm install
       # cd frontend
       # npm run lint
 
@@ -66,8 +67,14 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v4
 
+    - name: Download as an artifact
+      uses: actions/download-artifact@v4
+      with:
+        name: frontend-image
+        path: /tmp
+
     - name: Run frontend tests
       run: |
-        docker run --rm -v ${{ github.workspace }}:/app -w /app/frontend ${{ github.repository_owner }}/frontend:latest npm test
+        docker run --rm --volume ${{ github.workspace }}:/app --workdir /app/frontend ${{ github.repository_owner }}/frontend:latest npm test
       # cd frontend
       # npm test
