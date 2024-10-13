@@ -50,15 +50,13 @@ jobs:
     - name: Load image
       run: |
         docker load --input /tmp/frontend-image.tar
-        docker image ls -a
 
     - name: Lint and format
       run: |
         docker run --rm --volume ${{ github.workspace }}:/app --workdir /app/frontend ${{ github.repository_owner }}/frontend:latest cat package.json
         docker run --rm --volume ${{ github.workspace }}:/app --workdir /app/frontend ${{ github.repository_owner }}/frontend:latest npm list -g --depth=0
         docker run --rm --volume ${{ github.workspace }}:/app --workdir /app/frontend ${{ github.repository_owner }}/frontend:latest npm install
-      # cd frontend
-      # npm run lint
+        docker run --rm --volume ${{ github.workspace }}:/app --workdir /app/frontend ${{ github.repository_owner }}/frontend:latest npm run lint
 
   test:
     runs-on: ubuntu-latest
@@ -73,8 +71,10 @@ jobs:
         name: frontend-image
         path: /tmp
 
+    - name: Load image
+      run: |
+        docker load --input /tmp/frontend-image.tar
+
     - name: Run frontend tests
       run: |
         docker run --rm --volume ${{ github.workspace }}:/app --workdir /app/frontend ${{ github.repository_owner }}/frontend:latest npm test
-      # cd frontend
-      # npm test
