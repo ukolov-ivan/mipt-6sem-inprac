@@ -35,21 +35,16 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v4
 
-    - name: Setup environment variables
-      run: |
-        cd ./backend/
-        touch .env
+    # - name: Setup environment variables
+    #   run: |
+    #     cd ./backend/
+    #     touch .env
     
-    - name: Setup secrets
-      run: 'echo DJ_SECRET_KEY=${{ secrets.DJ_SECRET_KEY }} >> .env'
-      # shell: bash
-      # env:
-      #   SECRET_KEY: ${{ secrets.SECRET_KEY }}
-
-    - name: debug log
-      run: |
-        ls -a -l
-        cat .env
+    # - name: Setup environment variables
+    #   run: 'echo SECRET_KEY="$SECRET_KEY" > .env'
+    #   shell: bash
+    #   env:
+    #     SECRET_KEY: ${{ secrets.SECRET_KEY }}
 
     - name: Set up Docker Buildx
       uses: docker/setup-buildx-action@v3
@@ -86,7 +81,7 @@ jobs:
 
     - name: Lint and format
       run: |
-        docker run --rm --volume ${{ github.workspace }}:/app --workdir /app/backend ${{ github.repository_owner }}/backend:latest bin bash -c "ls -a -l; cat ./.env"
+        docker run --rm --volume ${{ github.workspace }}:/app --workdir /app/backend ${{ github.repository_owner }}/backend:latest bin bash -c "pip freeze; mypy .; pylint ."
 
   test:
     runs-on: ubuntu-latest
