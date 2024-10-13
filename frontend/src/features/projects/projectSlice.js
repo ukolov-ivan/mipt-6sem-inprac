@@ -77,7 +77,7 @@ export const projectSlice = createSlice({
     name: "project",
     initialState,
     reducers: {
-        reset: (state) => initialState,
+        reset: () => initialState,
     },
     extraReducers: (builder) => {
         builder
@@ -121,7 +121,7 @@ export const projectSlice = createSlice({
             }).addCase(deleteProject.pending, (state) => {
                 state.isLoading = true;
             })
-            .addCase(deleteProject.fulfilled, (state, action) => {
+            .addCase(deleteProject.fulfilled, (state) => {
                 state.isLoading = false;
                 state.isSuccess = true;
                 state.currentProject = null;

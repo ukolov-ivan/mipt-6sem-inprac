@@ -86,12 +86,12 @@ jobs:
       - name: Lint frontend
         run: |
           cd frontend
-        #  npm run lint
+          npm run lint
 
       - name: Lint backend
         run: |
           cd backend
-        #  flake8 .
+          mypy .
 
   test:
     runs-on: ubuntu-latest

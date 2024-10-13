@@ -113,7 +113,7 @@ const ProjectPage = () => {
                         })}
                     </ListGroup>
                 ) : (
-                    <p>This project doesn't have any issues.</p>
+                    <p>This project doesn\&apost have any issues.</p>
                 )}
             </div>
         </Container>

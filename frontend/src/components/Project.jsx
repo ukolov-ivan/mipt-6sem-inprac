@@ -1,6 +1,7 @@
 import React from "react";
 import { Card, Nav } from "react-bootstrap";
 import { LinkContainer } from "react-router-bootstrap";
+import PropTypes from 'prop-types';
 
 const Project = ({ project }) => {
 	return (
@@ -16,6 +17,15 @@ const Project = ({ project }) => {
 			</p>
 		</Card>
 	);
+};
+
+Project.propTypes = {
+	project: PropTypes.shape({
+		id: PropTypes.string.isRequired,
+		name: PropTypes.string.isRequired,
+		description: PropTypes.string,
+		created_at: PropTypes.string.isRequired,
+	}).isRequired,
 };
 
 export default Project;

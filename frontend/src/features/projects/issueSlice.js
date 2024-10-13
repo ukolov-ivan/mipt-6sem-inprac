@@ -75,7 +75,7 @@ export const issueSlice = createSlice({
     name: "issue",
     initialState,
     reducers: {
-        reset: (state) => initialState,
+        reset: () => initialState,
     },
     extraReducers: (builder) => {
         builder

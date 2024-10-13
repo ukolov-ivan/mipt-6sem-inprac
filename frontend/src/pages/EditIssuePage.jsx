@@ -7,12 +7,6 @@ import Spinner from '../components/Spinner';
 import { getIssue, updateIssue } from "../features/projects/issueSlice";
 
 
-const ISSUE_STATUS = {
-    "P": { label: "Pending", color: "red" },
-    "IP": { label: "In Progress", color: "yellow" },
-    "D": { label: "Done", color: "green" },
-};
-
 const EditIssuePage = () => {
     const { projectId, issueId } = useParams();
 
@@ -55,7 +49,6 @@ const EditIssuePage = () => {
         return <Spinner />;
     }
 
-    const statusInfo = ISSUE_STATUS[status] || { label: "Unknown", color: "gray" };
 
     return (
         <Container>
@@ -67,16 +60,6 @@ const EditIssuePage = () => {
             </Row>
             <Row className="mt-3">
                 <Col>
-                    {/* <div style={{
-                        display: 'inline-block',
-                        padding: '5px 10px',
-                        backgroundColor: statusInfo.color,
-                        color: 'white',
-                        borderRadius: '5px',
-                        marginBottom: '10px'
-                    }}>
-                        Current Status: {statusInfo.label}
-                    </div> */}
                     <Form onSubmit={handleSubmit}>
                         <Form.Group controlId="title">
                             <Form.Label>Issue Title:</Form.Label>

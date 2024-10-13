@@ -6,7 +6,7 @@ import { createProject, reset } from "../features/projects/projectSlice";
 
 const CreateProjectPage = () => {
     const dispatch = useDispatch();
-    const { currentProject, isLoading, isError, message } = useSelector((state) => state.projects);
+    const { isLoading, isError, message } = useSelector((state) => state.projects);
 
     const [name, setName] = useState("");
     const [description, setDescription] = useState("");

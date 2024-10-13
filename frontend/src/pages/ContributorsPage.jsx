@@ -14,11 +14,11 @@ const ContributorsPage = () => {
     const dispatch = useDispatch();
     const [contributorsDetails, setContributorsDetails] = useState([]);
 
-    const { currentProject, isLoading: isLoadingProject, isError: isErrorProject, message: messageProject } = useSelector(
+    const { isError: isErrorProject, message: messageProject } = useSelector(
         (state) => state.projects
     );
 
-    const { contributors, isLoading: isLoadingContributors, isError: isErrorContributors, message: messageContributors } = useSelector(
+    const { isError: isErrorContributors, message: messageContributors } = useSelector(
         (state) => state.contributors
     );
 
