@@ -40,7 +40,7 @@ jobs:
         cd ./backend/
         touch .env
         echo "$SECRET_KEY"
-        echo SECRET_KEY="$SECRET_KEY" > .env
+        'echo SECRET_KEY="$SECRET_KEY" > .env'
       env:
         SECRET_KEY: ${{ secrets.SECRET_KEY }}
 
