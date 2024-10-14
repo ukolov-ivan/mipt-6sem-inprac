@@ -27,7 +27,7 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "lint": "DEBUG=eslint:cli-engine,eslint:flat-eslint npx eslint ."
+    "lint": "DEBUG=eslint:cli-engine,eslint:flat-eslint eslint ."
   },
   "eslintConfig": {
     "extends": "react-app"

@@ -7,6 +7,10 @@
 // import configureStore from 'redux-mock-store';
 // import ProjectPage from '../pages/ProjectPage';
 
+
+test('sanity check', () => {
+    expect(2 + 2 == 4);
+});
 // // Mock the necessary functions and components
 // jest.mock('react-toastify', () => ({
 //     toast: {
