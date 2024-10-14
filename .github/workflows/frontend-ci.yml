@@ -22,7 +22,7 @@ jobs:
       uses: actions/cache@v3
       with:
         path: /tmp/frontend-image.tar
-        key: ${{ runner.os }}-docker-${{ github.sha }}
+        key: ${{ runner.os }}-docker-${{ hashFiles('frontend/**') }}
         restore-keys: |
           ${{ runner.os }}-docker-
 
