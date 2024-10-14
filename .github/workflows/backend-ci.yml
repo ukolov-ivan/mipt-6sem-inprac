@@ -32,6 +32,14 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v4
 
+    - name: Cache Docker layers
+      uses: actions/cache@v3
+      with:
+        path: /tmp/backend-image.tar
+        key: ${{ runner.os }}-docker-${{ github.sha }}
+        restore-keys: |
+          ${{ runner.os }}-docker-
+
     # - name: Setup environment variables
     #   run: |
     #     cd ./backend/
@@ -99,4 +107,4 @@ jobs:
 
     - name: Run tests
       run: |
-        docker run --rm --volume ${{ github.workspace }}:/app --workdir /app/backend ${{ github.repository_owner }}/backend:latest python manage.py test
+        docker run --rm --volume ${{ github.workspace }}:/app --workdir /app/backend ${{ github.repository_owner }}/backend:latest pytest
