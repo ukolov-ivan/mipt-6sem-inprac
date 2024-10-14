@@ -8,4 +8,4 @@ COPY ./frontend/package*.json .
 RUN npm install
 
 COPY ./frontend .
-CMD ["npm", "start"]
+ENTRYPOINT ["npm", "start"]
