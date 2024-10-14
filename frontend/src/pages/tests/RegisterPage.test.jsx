@@ -4,8 +4,8 @@ import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
 import { toast } from "react-toastify";
 import configureStore from "redux-mock-store";
-import { reset } from "../features/auth/authSlice";
-import RegisterPage from "./RegisterPage";
+import { reset } from "../../features/auth/authSlice";
+import RegisterPage from "../RegisterPage";
 jest.mock("react-toastify");
 
 const mockStore = configureStore([]);

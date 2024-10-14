@@ -65,7 +65,7 @@ const LoginPage = () => {
 				<Col className="justify-content-center">
 					<Form onSubmit={submitHandler}>
 						<Form.Group controlId="email">
-							<Form.Label>Email Addrss</Form.Label>
+							<Form.Label>Email address</Form.Label>
 							<Form.Control
 								type="email"
 								placeholder="Enter Email"
@@ -91,7 +91,7 @@ const LoginPage = () => {
 							variant="primary"
 							className="mt-3"
 						>
-							Sign In
+							Sign in
 						</Button>
 					</Form>
 				</Col>
