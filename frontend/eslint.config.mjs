@@ -1,7 +1,6 @@
 import pluginJs from '@eslint/js';
-import jestPlugin from 'eslint-plugin-jest';
+import jest from 'eslint-plugin-jest';
 import pluginReact from 'eslint-plugin-react';
-import globals from 'globals';
 
 
 export default [
@@ -17,9 +16,31 @@ export default [
       },
     },
   },
-  { languageOptions: { globals: globals.browser } },
-
+  // {
+  // plugins: {
+  //   react: pluginReact,
+  //   jest: jest
+  // },
+  // },
+  // {
+  //   plugins: { jest },
+  //   rules: {
+  //     ...jest.configs.recommended.rules,
+  //   },
+  // },
+  // {
+  //   languageOptions: { globals: { ...globals.browser, ...globals.jest, } }
+  // },
+  // "plugins" : [pluginJs, pluginReact, jest],
   pluginJs.configs.recommended,
   pluginReact.configs.flat.recommended,
-  jestPlugin.configs.recommended
+  // jest.configs.recommended,
+  {
+    files: ['tests/**'],
+    ...jest.configs['flat/recommended'],
+    rules: {
+      ...jest.configs['flat/recommended'].rules,
+      'jest/prefer-expect-assertions': 'off',
+    },
+  },
 ];
