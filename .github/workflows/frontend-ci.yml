@@ -61,7 +61,7 @@ jobs:
 
     - name: Lint and format
       run: |
-        docker run --rm --volume ${{ github.workspace }}:/app --workdir /app/frontend ${{ github.repository_owner }}/frontend:latest --entrypoint "npm run lint"
+        docker run --rm --volume ${{ github.workspace }}:/app --workdir /app/frontend ${{ github.repository_owner }}/frontend:latest npm run lint
       continue-on-error: true
 
   test:
@@ -83,5 +83,5 @@ jobs:
 
     - name: Run frontend tests
       run: |
-        docker run --rm --volume ${{ github.workspace }}:/app --workdir /app/frontend ${{ github.repository_owner }}/frontend:latest --entrypoint echo test
+        docker run --rm --volume ${{ github.workspace }}:/app --workdir /app/frontend ${{ github.repository_owner }}/frontend:latest echo test
       #  docker run --rm --volume ${{ github.workspace }}:/app --workdir /app/frontend ${{ github.repository_owner }}/frontend:latest --entrypoint npm test

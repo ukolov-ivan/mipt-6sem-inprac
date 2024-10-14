@@ -87,7 +87,7 @@ jobs:
 
     - name: Lint and format
       run: |
-        docker run --rm --volume ${{ github.workspace }}:/app --workdir /app/backend ${{ github.repository_owner }}/backend:latest --entrypoint bash -c "mypy .; pylint ."
+        docker run --rm --volume ${{ github.workspace }}:/app --workdir /app/backend ${{ github.repository_owner }}/backend:latest bash -c "mypy .; pylint ."
       continue-on-error: true
 
   test:
@@ -109,4 +109,4 @@ jobs:
 
     - name: Run tests
       run: |
-        docker run --rm --volume ${{ github.workspace }}:/app --workdir /app/backend ${{ github.repository_owner }}/backend:latest --entrypoint pytest
+        docker run --rm --volume ${{ github.workspace }}:/app --workdir /app/backend ${{ github.repository_owner }}/backend:latest pytest
