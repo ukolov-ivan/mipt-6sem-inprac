@@ -15,7 +15,7 @@ const get_instance = () => {
 
 	// Set the AUTH token for any request
 	instance.interceptors.request.use(function (config) {
-		const token = JSON.parse(localStorage.getItem("user")).access;
+		const token = JSON.parse(localStorage.getItem("user"))?.access;
 		config.headers.Authorization = token ? `Bearer ${token}` : '';
 		return config;
 	});

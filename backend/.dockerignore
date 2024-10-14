@@ -1,5 +1,3 @@
-Dockerfile
-
 # Unit test / coverage reports
 htmlcov/
 .tox/
@@ -14,3 +12,4 @@ coverage.xml
 *.pyc
 __pycache__/
 
+# TODO -- add regular environement files

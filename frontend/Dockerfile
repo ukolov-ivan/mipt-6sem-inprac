@@ -1,15 +1,11 @@
-ARG NODE_VERSION=20.14-alpine
+FROM node:20.14-alpine AS node
 
-FROM node:${NODE_VERSION} AS node
-
-ARG APP_HOME=/app
-
+ENV APP_HOME=/app
+RUN mkdir ${APP_HOME}
 WORKDIR ${APP_HOME}
 
 COPY ./frontend/package*.json .
-
-COPY . .
 RUN npm install
 
-EXPOSE 3000
+COPY ./frontend .
 CMD ["npm", "start"]

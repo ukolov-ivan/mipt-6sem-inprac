@@ -9,10 +9,11 @@
     "@testing-library/user-event": "^7.2.1",
     "axios": "^0.26.1",
     "bootstrap": "^5.1.3",
+    "jest": "^27.5.1",
     "prop-types": "^15.8.1",
-    "react": "^17.0.2",
+    "react": "^18.1.0",
     "react-bootstrap": "^2.2.1",
-    "react-dom": "^17.0.2",
+    "react-dom": "^18.1.0",
     "react-helmet": "^6.1.0",
     "react-icons": "^4.3.1",
     "react-redux": "^7.2.6",
@@ -26,7 +27,7 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "lint": "eslint \"**/*.js\""
+    "lint": "DEBUG=eslint:cli-engine,eslint:flat-eslint npx eslint ."
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -47,6 +48,7 @@
     "@eslint/js": "^9.12.0",
     "eslint": "^8.57.1",
     "eslint-plugin-react": "^7.37.1",
-    "globals": "^15.11.0"
+    "globals": "^15.11.0",
+    "redux-mock-store": "^1.5.4"
   }
 }
