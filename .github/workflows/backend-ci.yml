@@ -87,7 +87,7 @@ jobs:
 
     - name: Lint and format
       run: |
-        docker run --rm --volume ${{ github.workspace }}:/app --workdir /app/backend ${{ github.repository_owner }}/backend:latest bin bash -c "mypy .; pylint ."
+        docker run --rm --volume ${{ github.workspace }}:/app --workdir /app/backend ${{ github.repository_owner }}/backend:latest bash -c "mypy .; pylint ."
 
   test:
     runs-on: ubuntu-latest
