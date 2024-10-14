@@ -83,4 +83,4 @@ jobs:
     - name: Run frontend tests
       run: |
         docker run --rm --volume ${{ github.workspace }}:/app --workdir /app/frontend ${{ github.repository_owner }}/frontend:latest echo test
-#        docker run --rm --volume ${{ github.workspace }}:/app --workdir /app/frontend ${{ github.repository_owner }}/frontend:latest npm test
+      #  docker run --rm --volume ${{ github.workspace }}:/app --workdir /app/frontend ${{ github.repository_owner }}/frontend:latest npm test
