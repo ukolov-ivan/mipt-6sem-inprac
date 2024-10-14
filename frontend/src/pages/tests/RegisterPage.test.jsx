@@ -33,13 +33,16 @@ describe("RegisterPage", () => {
                 </MemoryRouter>
             </Provider>
         );
-        // expect(screen.getByText(/registration/i)).toBeInTheDocument();
-        // expect(screen.getByLabelText(/username/i)).toBeInTheDocument();
-        // expect(screen.getByLabelText(/first name/i)).toBeInTheDocument();
-        // expect(screen.getByLabelText(/last name/i)).toBeInTheDocument();
-        // expect(screen.getByLabelText(/email address/i)).toBeInTheDocument();
-        // expect(screen.getByLabelText(/password/i)).toBeInTheDocument();
-        // expect(screen.getByLabelText(/confirm password/i)).toBeInTheDocument();
+
+        expect(screen.getByRole('button', {
+            name: /Register/i
+        })).toBeInTheDocument();
+        expect(screen.getByLabelText(/username/i)).toBeInTheDocument();
+        expect(screen.getByLabelText(/first name/i)).toBeInTheDocument();
+        expect(screen.getByLabelText(/last name/i)).toBeInTheDocument();
+        expect(screen.getByLabelText(/email address/i)).toBeInTheDocument();
+        expect(screen.getByLabelText(/password/i)).toBeInTheDocument();
+        expect(screen.getByLabelText(/confirm password/i)).toBeInTheDocument();
     });
 
     test("displays error when passwords do not match", () => {
