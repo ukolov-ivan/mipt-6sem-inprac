@@ -18,13 +18,13 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v4
 
-    - name: Cache Docker layers
-      uses: actions/cache@v3
-      with:
-        path: /tmp/frontend-image.tar
-        key: ${{ runner.os }}-docker-${{ hashFiles('frontend/**') }}
-        restore-keys: |
-          ${{ runner.os }}-docker-
+    # - name: Cache Docker layers
+    #   uses: actions/cache@v3
+    #   with:
+    #     path: /tmp/frontend-image.tar
+    #     key: ${{ runner.os }}-docker-${{ hashFiles('frontend/**') }}
+    #     restore-keys: |
+    #       ${{ runner.os }}-docker-
 
     - name: Set up Docker Buildx
       uses: docker/setup-buildx-action@v3

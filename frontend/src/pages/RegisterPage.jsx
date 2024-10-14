@@ -107,7 +107,7 @@ const RegisterPage = () => {
 						</Form.Group>
 
 						<Form.Group controlId="email">
-							<Form.Label>Email Addrss</Form.Label>
+							<Form.Label>Email Address</Form.Label>
 							<Form.Control
 								type="email"
 								placeholder="Enter Email"
@@ -146,6 +146,11 @@ const RegisterPage = () => {
 							className="mt-3"
 						>
 							Register
+							{/* <Button.Group>
+
+							<Button.Label> Register </Button.Label>
+							<Button.Control></Button.Control>
+						</Button.Group> */}
 						</Button>
 					</Form>
 				</Col>

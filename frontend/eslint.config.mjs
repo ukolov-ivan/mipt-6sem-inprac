@@ -1,10 +1,11 @@
-import globals from "globals";
-import pluginJs from "@eslint/js";
-import pluginReact from "eslint-plugin-react";
-
+import pluginJs from '@eslint/js';
+import jestPlugin from 'eslint-plugin-jest';
+import pluginReact from 'eslint-plugin-react';
+import globals from 'globals';
 
 
 export default [
+
   {
     ignores: [""],
   },
@@ -16,8 +17,9 @@ export default [
       },
     },
   },
-  {languageOptions: { globals: globals.browser }},
-  
+  { languageOptions: { globals: globals.browser } },
+
   pluginJs.configs.recommended,
   pluginReact.configs.flat.recommended,
+  jestPlugin.configs.recommended
 ];
