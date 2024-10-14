@@ -10,7 +10,7 @@ class Project(models.Model):
     description = models.TextField(default="")
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-    contributors = models.ManyToManyField(User, related_name="contributed_projects", through="Contributorship")  # type: ignore
+    contributors = models.ManyToManyField(User, related_name="contributed_projects", through="Contributorship")
 
 
 class Contributorship(models.Model):

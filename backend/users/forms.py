@@ -1,5 +1,5 @@
 from django.contrib.auth.forms import UserChangeForm, UserCreationForm
-from django.forms.utils import ErrorList
+
 from .models import User
 
 

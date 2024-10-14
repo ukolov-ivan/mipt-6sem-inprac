@@ -1,9 +1,9 @@
+from django.db.models.query import QuerySet
 from rest_framework import permissions, status, viewsets
 from rest_framework.exceptions import NotFound
 from rest_framework.response import Response
 
 from .models import Comment, Contributorship, Issue, Project
-from .permissions import IsContributor, IsOwner
 from .serializers import (
     CommentSerializer,
     ContributorshipSerializer,
@@ -13,40 +13,41 @@ from .serializers import (
 
 
 class ProjectViewSet(viewsets.ModelViewSet[Project]):
-    queryset = Project.objects.all()
+    queryset: QuerySet[Project] = Project.objects.all()
     serializer_class = ProjectSerializer
     permission_classes = [permissions.IsAuthenticated]
 
     def perform_create(self, serializer):
-        # project_id = kwargs.get("project_pk")
         serializer.save(owner=self.request.user)
 
 
 class IssueViewSet(viewsets.ModelViewSet[Issue]):
-    # queryset = Issue.objects.all()
+    queryset: QuerySet[Issue] = Issue.objects.all()
     serializer_class = IssueSerializer
     permission_classes = [permissions.IsAuthenticated]
 
     def get_queryset(self):
         project_id = self.kwargs.get("project_pk")
-        return Issue.objects.filter(project_id=project_id)
+        return self.queryset.filter(project_id=project_id)
 
     def perform_create(self, serializer, **kwargs):
-        # project_id = kwargs.get("project_pk")
         serializer.save(reporter=self.request.user)
 
 
 class CommentViewSet(viewsets.ModelViewSet[Comment]):
-    queryset = Comment.objects.all()
+    queryset: QuerySet[Comment] = Comment.objects.all()
     serializer_class = CommentSerializer
     permission_classes = [permissions.IsAuthenticated]
+
+    def get_queryset(self) -> QuerySet[Comment]:
+        raise NotImplementedError(...)
 
     def perform_create(self, serializer):
         serializer.save(author=self.request.user)
 
 
 class ContributorshipViewSet(viewsets.ModelViewSet[Contributorship]):
-    queryset = Contributorship.objects.all()
+    queryset: QuerySet[Contributorship] = Contributorship.objects.all()
     serializer_class = ContributorshipSerializer
     permission_classes = [permissions.IsAuthenticated]
 
@@ -62,5 +63,5 @@ class ContributorshipViewSet(viewsets.ModelViewSet[Contributorship]):
             contributorship = self.queryset.get(user_id=user_id, project_id=project_id)
             contributorship.delete()
             return Response(status=status.HTTP_204_NO_CONTENT)
-        except Contributorship.DoesNotExist:
-            raise NotFound(detail="Contributor not found.", code=404)
+        except Contributorship.DoesNotExist as exc:
+            raise NotFound(detail="Contributor not found.", code="404") from exc
