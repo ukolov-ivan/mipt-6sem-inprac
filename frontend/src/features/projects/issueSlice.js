@@ -1,5 +1,5 @@
-import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import projectAPIService from "../../api";
+import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import projectAPIService from '../../api';
 
 const initialState = {
     issues: [],
@@ -7,38 +7,37 @@ const initialState = {
     isError: false,
     isLoading: true,
     isSuccess: false,
-    message: "",
+    message: '',
 };
 
 export const getIssuesForProject = createAsyncThunk(
-    "issues",
+    'issues',
     async (projectId, thunkAPI) => {
         try {
             return await projectAPIService.getIssuesForProject(projectId);
         } catch (error) {
             const message =
-                (error?.response?.data?.message) ||
+                error?.response?.data?.message ||
                 error.message ||
                 error.toString();
             return thunkAPI.rejectWithValue(message);
         }
-    }
+    },
 );
 
 export const getIssue = createAsyncThunk(
-    "issues/getIssue",
+    'issues/getIssue',
     async ({ projectId, issueId }, thunkAPI) => {
         try {
-
             return await projectAPIService.getIssue(projectId, issueId);
         } catch (error) {
             const message =
-                (error?.response?.data?.message) ||
+                error?.response?.data?.message ||
                 error.message ||
                 error.toString();
             return thunkAPI.rejectWithValue(message);
         }
-    }
+    },
 );
 
 export const createIssue = createAsyncThunk(
@@ -48,31 +47,35 @@ export const createIssue = createAsyncThunk(
             return await projectAPIService.createIssue(projectId, issueData);
         } catch (error) {
             const message =
-                (error?.response?.data?.message) ||
+                error?.response?.data?.message ||
                 error.message ||
                 error.toString();
             return thunkAPI.rejectWithValue(message);
-        };
-    }
+        }
+    },
 );
 
 export const updateIssue = createAsyncThunk(
     'issues/updateIssue',
     async ({ projectId, issueId, issueData }, thunkAPI) => {
         try {
-            return await projectAPIService.updateIssue(projectId, issueId, issueData);
+            return await projectAPIService.updateIssue(
+                projectId,
+                issueId,
+                issueData,
+            );
         } catch (error) {
             const message =
-                (error?.response?.data?.message) ||
+                error?.response?.data?.message ||
                 error.message ||
                 error.toString();
             return thunkAPI.rejectWithValue(message);
         }
-    }
+    },
 );
 
 export const issueSlice = createSlice({
-    name: "issue",
+    name: 'issue',
     initialState,
     reducers: {
         reset: () => initialState,
@@ -128,8 +131,7 @@ export const issueSlice = createSlice({
                 state.isLoading = false;
                 state.isError = true;
                 state.message = action.error.message;
-            })
-
+            });
     },
 });
 

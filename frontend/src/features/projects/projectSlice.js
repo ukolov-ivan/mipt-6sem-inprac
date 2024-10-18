@@ -1,5 +1,5 @@
-import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import projectAPIService from "../../api";
+import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import projectAPIService from '../../api';
 
 const initialState = {
     projects: [],
@@ -7,74 +7,74 @@ const initialState = {
     isError: false,
     isLoading: false,
     isSuccess: false,
-    message: "",
+    message: '',
 };
 
 export const getProjects = createAsyncThunk(
-    "projects/getAll",
+    'projects/getAll',
     async (_, thunkAPI) => {
         try {
             return await projectAPIService.getProjects();
         } catch (error) {
             const message =
-                (error?.response?.data?.message) ||
+                error?.response?.data?.message ||
                 error.message ||
                 error.toString();
 
             return thunkAPI.rejectWithValue(message);
         }
-    }
+    },
 );
 
 export const getProject = createAsyncThunk(
-    "projects/getById",
+    'projects/getById',
     async (projectId, thunkAPI) => {
         try {
             return await projectAPIService.getProject(projectId);
         } catch (error) {
             const message =
-                (error?.response?.data?.message) ||
+                error?.response?.data?.message ||
                 error.message ||
                 error.toString();
 
             return thunkAPI.rejectWithValue(message);
         }
-    }
+    },
 );
 
 export const createProject = createAsyncThunk(
-    "projects/create",
+    'projects/create',
     async (projectData, thunkAPI) => {
         try {
             return await projectAPIService.createProject(projectData);
         } catch (error) {
             const message =
-                (error?.response?.data?.message) ||
+                error?.response?.data?.message ||
                 error.message ||
                 error.toString();
             return thunkAPI.rejectWithValue(message);
         }
-    }
+    },
 );
 
 export const deleteProject = createAsyncThunk(
-    "projects/delete",
+    'projects/delete',
     async (projectId, thunkAPI) => {
         try {
             return await projectAPIService.deleteProject(projectId);
         } catch (error) {
             const message =
-                (error?.response?.data?.message) ||
+                error?.response?.data?.message ||
                 error.message ||
                 error.toString();
 
             return thunkAPI.rejectWithValue(message);
         }
-    }
+    },
 );
 
 export const projectSlice = createSlice({
-    name: "project",
+    name: 'project',
     initialState,
     reducers: {
         reset: () => initialState,
@@ -93,7 +93,8 @@ export const projectSlice = createSlice({
                 state.isLoading = false;
                 state.isError = true;
                 state.message = action.payload;
-            }).addCase(createProject.pending, (state) => {
+            })
+            .addCase(createProject.pending, (state) => {
                 state.isLoading = true;
             })
             .addCase(createProject.fulfilled, (state, action) => {
@@ -106,7 +107,8 @@ export const projectSlice = createSlice({
                 state.isLoading = false;
                 state.isError = true;
                 state.message = action.payload;
-            }).addCase(getProject.pending, (state) => {
+            })
+            .addCase(getProject.pending, (state) => {
                 state.isLoading = true;
             })
             .addCase(getProject.fulfilled, (state, action) => {
@@ -118,7 +120,8 @@ export const projectSlice = createSlice({
                 state.isLoading = false;
                 state.isError = true;
                 state.message = action.payload;
-            }).addCase(deleteProject.pending, (state) => {
+            })
+            .addCase(deleteProject.pending, (state) => {
                 state.isLoading = true;
             })
             .addCase(deleteProject.fulfilled, (state) => {

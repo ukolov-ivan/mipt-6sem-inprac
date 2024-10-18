@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import projectAPIService from "../../api";
+import projectAPIService from '../../api';
 
 export const getContributors = createAsyncThunk(
     'contributors/getContributors',
@@ -8,12 +8,12 @@ export const getContributors = createAsyncThunk(
             return await projectAPIService.getContributors(projectId);
         } catch (error) {
             const message =
-                (error?.response?.data?.message) ||
+                error?.response?.data?.message ||
                 error.message ||
                 error.toString();
             return thunkAPI.rejectWithValue(message);
-        };
-    }
+        }
+    },
 );
 
 export const addContributor = createAsyncThunk(
@@ -23,12 +23,12 @@ export const addContributor = createAsyncThunk(
             return await projectAPIService.addContributor(projectId, userId);
         } catch (error) {
             const message =
-                (error?.response?.data?.message) ||
+                error?.response?.data?.message ||
                 error.message ||
                 error.toString();
             return thunkAPI.rejectWithValue(message);
-        };
-    }
+        }
+    },
 );
 
 export const removeContributor = createAsyncThunk(
@@ -38,12 +38,12 @@ export const removeContributor = createAsyncThunk(
             return await projectAPIService.removeContributor(projectId, userId);
         } catch (error) {
             const message =
-                (error?.response?.data?.message) ||
+                error?.response?.data?.message ||
                 error.message ||
                 error.toString();
             return thunkAPI.rejectWithValue(message);
-        };
-    }
+        }
+    },
 );
 
 const contributorsSlice = createSlice({
@@ -92,13 +92,15 @@ const contributorsSlice = createSlice({
             })
             .addCase(removeContributor.fulfilled, (state, action) => {
                 state.isLoading = false;
-                state.contributors = state.contributors.filter(contributor => contributor.id !== action.payload.id);
+                state.contributors = state.contributors.filter(
+                    (contributor) => contributor.id !== action.payload.id,
+                );
             })
             .addCase(removeContributor.rejected, (state, action) => {
                 state.isLoading = false;
                 state.isError = true;
                 state.message = action.error.message;
-            })
+            });
     },
 });
 

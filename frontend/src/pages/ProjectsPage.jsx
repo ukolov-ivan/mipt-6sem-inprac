@@ -1,28 +1,28 @@
-import React, { useEffect } from "react";
-import { Button, Col, Container, ListGroup, Row } from "react-bootstrap";
-import { useDispatch, useSelector } from "react-redux";
-import { Link } from "react-router-dom";
-import { toast } from "react-toastify";
-import Project from "../components/Project";
-import Spinner from "../components/Spinner";
-import { deleteProject, getProjects } from "../features/projects/projectSlice";
+import React, { useEffect } from 'react';
+import { Button, Col, Container, ListGroup, Row } from 'react-bootstrap';
+import { useDispatch, useSelector } from 'react-redux';
+import { Link } from 'react-router-dom';
+import { toast } from 'react-toastify';
+import Project from '../components/Project';
+import Spinner from '../components/Spinner';
+import { deleteProject, getProjects } from '../features/projects/projectSlice';
 
 const ProjectsPage = () => {
     const { projects, isLoading, isError, message } = useSelector(
-        (state) => state.projects
+        (state) => state.projects,
     );
 
     const dispatch = useDispatch();
 
     useEffect(() => {
         if (isError) {
-            toast.error(message, { icon: "😭" });
+            toast.error(message, { icon: '😭' });
         }
         dispatch(getProjects());
     }, [dispatch, isError, message]);
 
     const handleDelete = (projectId) => {
-        if (window.confirm("Are you sure you want to delete this project?")) {
+        if (window.confirm('Are you sure you want to delete this project?')) {
             dispatch(deleteProject(projectId));
             dispatch(getProjects());
         }
@@ -41,7 +41,11 @@ const ProjectsPage = () => {
             </Row>
             <Row>
                 <Col className="text-center mb-3">
-                    <Button variant="primary" as={Link} to={`/projects/create/`}>
+                    <Button
+                        variant="primary"
+                        as={Link}
+                        to={`/projects/create/`}
+                    >
                         Create New Project
                     </Button>
                 </Col>
@@ -50,9 +54,19 @@ const ProjectsPage = () => {
                 <Col>
                     <ListGroup>
                         {projects.map((project) => (
-                            <ListGroup.Item key={project.id} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                            <ListGroup.Item
+                                key={project.id}
+                                style={{
+                                    display: 'flex',
+                                    justifyContent: 'space-between',
+                                    alignItems: 'center',
+                                }}
+                            >
                                 <Project project={project} />
-                                <Button variant="danger" onClick={() => handleDelete(project.id)}>
+                                <Button
+                                    variant="danger"
+                                    onClick={() => handleDelete(project.id)}
+                                >
                                     Delete
                                 </Button>
                             </ListGroup.Item>

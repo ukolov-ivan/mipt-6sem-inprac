@@ -1,15 +1,17 @@
-import React, { useState } from "react";
-import { Button, Col, Container, Form, Row } from "react-bootstrap";
-import { useDispatch, useSelector } from "react-redux";
-import { toast } from "react-toastify";
-import { createProject, reset } from "../features/projects/projectSlice";
+import React, { useState } from 'react';
+import { Button, Col, Container, Form, Row } from 'react-bootstrap';
+import { useDispatch, useSelector } from 'react-redux';
+import { toast } from 'react-toastify';
+import { createProject, reset } from '../features/projects/projectSlice';
 
 const CreateProjectPage = () => {
     const dispatch = useDispatch();
-    const { isLoading, isError, message } = useSelector((state) => state.projects);
+    const { isLoading, isError, message } = useSelector(
+        (state) => state.projects,
+    );
 
-    const [name, setName] = useState("");
-    const [description, setDescription] = useState("");
+    const [name, setName] = useState('');
+    const [description, setDescription] = useState('');
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -19,7 +21,7 @@ const CreateProjectPage = () => {
 
     React.useEffect(() => {
         if (isError) {
-            toast.error(message, { icon: "😭" });
+            toast.error(message, { icon: '😭' });
             dispatch(reset());
         }
     }, [isError, message, dispatch]);
@@ -45,7 +47,10 @@ const CreateProjectPage = () => {
                                 required
                             />
                         </Form.Group>
-                        <Form.Group controlId="projectDescription" className="mb-3">
+                        <Form.Group
+                            controlId="projectDescription"
+                            className="mb-3"
+                        >
                             <Form.Label>Description:</Form.Label>
                             <Form.Control
                                 as="textarea"
@@ -53,8 +58,13 @@ const CreateProjectPage = () => {
                                 onChange={(e) => setDescription(e.target.value)}
                             />
                         </Form.Group>
-                        <Button variant="primary" type="submit" disabled={isLoading} link>
-                            {isLoading ? "Creating..." : "Create Project"}
+                        <Button
+                            variant="primary"
+                            type="submit"
+                            disabled={isLoading}
+                            link
+                        >
+                            {isLoading ? 'Creating...' : 'Create Project'}
                         </Button>
                     </Form>
                 </Col>

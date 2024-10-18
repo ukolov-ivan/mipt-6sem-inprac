@@ -4,10 +4,15 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import { useParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
-import projectAPIService from "../api";
-import { addContributor, getContributors, removeContributor, reset } from "../features/projects/contributorSlice";
+import projectAPIService from '../api';
+import {
+    addContributor,
+    getContributors,
+    removeContributor,
+    reset,
+} from '../features/projects/contributorSlice';
 
-import { getProject } from "../features/projects/projectSlice";
+import { getProject } from '../features/projects/projectSlice';
 
 const ContributorsPage = () => {
     const { projectId } = useParams();
@@ -15,21 +20,26 @@ const ContributorsPage = () => {
     const [contributorsDetails, setContributorsDetails] = useState([]);
 
     const { isError: isErrorProject, message: messageProject } = useSelector(
-        (state) => state.projects
+        (state) => state.projects,
     );
 
-    const { isError: isErrorContributors, message: messageContributors } = useSelector(
-        (state) => state.contributors
-    );
+    const { isError: isErrorContributors, message: messageContributors } =
+        useSelector((state) => state.contributors);
 
     useEffect(() => {
         const fetchContributors = async () => {
             try {
-                const userIds = await dispatch(getContributors(projectId)).unwrap();
-                const users = await Promise.all(userIds.map(projectAPIService.getUser));
+                const userIds = await dispatch(
+                    getContributors(projectId),
+                ).unwrap();
+                const users = await Promise.all(
+                    userIds.map(projectAPIService.getUser),
+                );
                 setContributorsDetails(users);
             } catch (error) {
-                toast.error(error.message || "Failed to fetch contributors.", { icon: '😭' });
+                toast.error(error.message || 'Failed to fetch contributors.', {
+                    icon: '😭',
+                });
             }
         };
 
@@ -48,7 +58,12 @@ const ContributorsPage = () => {
         if (isErrorContributors) {
             toast.error(messageContributors, { icon: '😭' });
         }
-    }, [isErrorProject, isErrorContributors, messageProject, messageContributors]);
+    }, [
+        isErrorProject,
+        isErrorContributors,
+        messageProject,
+        messageContributors,
+    ]);
 
     const [userIdToAdd, setUserIdToAdd] = useState('');
 
@@ -58,15 +73,20 @@ const ContributorsPage = () => {
                 dispatch(addContributor({ projectId, userId: userIdToAdd }));
                 setUserIdToAdd('');
 
-                const userIds = await dispatch(getContributors(projectId)).unwrap();
-                const users = await Promise.all(userIds.map(projectAPIService.getUser));
+                const userIds = await dispatch(
+                    getContributors(projectId),
+                ).unwrap();
+                const users = await Promise.all(
+                    userIds.map(projectAPIService.getUser),
+                );
                 setContributorsDetails(users);
-
             } catch (error) {
-                toast.error(error.message || "Failed to add contributor.", { icon: '😭' });
+                toast.error(error.message || 'Failed to add contributor.', {
+                    icon: '😭',
+                });
             }
         } else {
-            toast.error("Please enter a user ID to add.");
+            toast.error('Please enter a user ID to add.');
         }
     };
 
@@ -83,7 +103,6 @@ const ContributorsPage = () => {
     // }
 
     return (
-
         <Container>
             <Row>
                 <Col className="mg-top text-center">
@@ -107,7 +126,10 @@ const ContributorsPage = () => {
                             placeholder="Enter User ID to add"
                             className="mr-2"
                         />
-                        <Button variant="primary" onClick={handleAddContributor}>
+                        <Button
+                            variant="primary"
+                            onClick={handleAddContributor}
+                        >
                             Add Contributor
                         </Button>
                     </Form>
@@ -118,9 +140,22 @@ const ContributorsPage = () => {
                     {contributorsDetails.length > 0 ? (
                         <ListGroup>
                             {contributorsDetails.map((contributor) => (
-                                <ListGroup.Item key={contributor.pkid} className="d-flex justify-content-between align-items-center">
-                                    {contributor.first_name} {contributor.last_name} ({contributor.username})
-                                    <Button variant="danger" size="sm" onClick={() => handleRemoveContributor(contributor.pkid)}>
+                                <ListGroup.Item
+                                    key={contributor.pkid}
+                                    className="d-flex justify-content-between align-items-center"
+                                >
+                                    {contributor.first_name}{' '}
+                                    {contributor.last_name} (
+                                    {contributor.username})
+                                    <Button
+                                        variant="danger"
+                                        size="sm"
+                                        onClick={() =>
+                                            handleRemoveContributor(
+                                                contributor.pkid,
+                                            )
+                                        }
+                                    >
                                         Remove
                                     </Button>
                                 </ListGroup.Item>

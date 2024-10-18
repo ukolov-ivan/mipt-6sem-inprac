@@ -1,22 +1,23 @@
-import React, { useEffect, useState } from "react";
-import { Button, Col, Container, Form, Row } from "react-bootstrap";
-import { useDispatch, useSelector } from "react-redux";
-import { useParams } from "react-router-dom";
-import { toast } from "react-toastify";
+import React, { useEffect, useState } from 'react';
+import { Button, Col, Container, Form, Row } from 'react-bootstrap';
+import { useDispatch, useSelector } from 'react-redux';
+import { useParams } from 'react-router-dom';
+import { toast } from 'react-toastify';
 import Spinner from '../components/Spinner';
-import { getIssue, updateIssue } from "../features/projects/issueSlice";
-
+import { getIssue, updateIssue } from '../features/projects/issueSlice';
 
 const EditIssuePage = () => {
     const { projectId, issueId } = useParams();
 
     const dispatch = useDispatch();
-    const { currentIssue, isLoading, isError, message } = useSelector((state) => state.issues);
+    const { currentIssue, isLoading, isError, message } = useSelector(
+        (state) => state.issues,
+    );
 
-    const [title, setTitle] = useState("");
-    const [description, setDescription] = useState("");
-    const [assignee, setAssignee] = useState("");
-    const [status, setStatus] = useState("");
+    const [title, setTitle] = useState('');
+    const [description, setDescription] = useState('');
+    const [assignee, setAssignee] = useState('');
+    const [status, setStatus] = useState('');
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -27,7 +28,7 @@ const EditIssuePage = () => {
 
     useEffect(() => {
         if (isError) {
-            toast.error(message, { icon: "😭" });
+            toast.error(message, { icon: '😭' });
             // dispatch(reset());
         }
     }, [isError, message, dispatch]);
@@ -40,15 +41,14 @@ const EditIssuePage = () => {
         if (currentIssue) {
             setTitle(currentIssue.title);
             setDescription(currentIssue.description);
-            setAssignee(currentIssue.assignee || "");
-            setStatus(currentIssue.status || "");
+            setAssignee(currentIssue.assignee || '');
+            setStatus(currentIssue.status || '');
         }
     }, [currentIssue]);
 
     if (isLoading) {
         return <Spinner />;
     }
-
 
     return (
         <Container>
@@ -100,8 +100,12 @@ const EditIssuePage = () => {
                                 <option value="D">Done</option>
                             </Form.Control>
                         </Form.Group>
-                        <Button variant="primary" type="submit" disabled={isLoading}>
-                            {isLoading ? "Submitting..." : "Save Issue"}
+                        <Button
+                            variant="primary"
+                            type="submit"
+                            disabled={isLoading}
+                        >
+                            {isLoading ? 'Submitting...' : 'Save Issue'}
                         </Button>
                     </Form>
                 </Col>

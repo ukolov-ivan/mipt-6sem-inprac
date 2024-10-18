@@ -1,46 +1,39 @@
-import pluginJs from '@eslint/js';
-import jest from 'eslint-plugin-jest';
-import pluginReact from 'eslint-plugin-react';
-
+import jsPlugin from '@eslint/js';
+import prettierConfig from 'eslint-config-prettier';
+import jestPlugin from 'eslint-plugin-jest';
+import eslintPluginPrettierRecommended from 'eslint-plugin-prettier/recommended';
+import reactPlugin from 'eslint-plugin-react';
+import globals from 'globals';
 
 export default [
-
-  {
-    ignores: [""],
-  },
-  {
-    files: ["**/*.{js,mjs,cjs,jsx}"],
-    settings: {
-      react: {
-        version: "detect",
-      },
+    {
+        files: ['**/*.{js,mjs,cjs,jsx}'],
+        ...jsPlugin.configs.recommended,
+        ...reactPlugin.configs.flat.recommended,
+        ...prettierConfig,
+        ...eslintPluginPrettierRecommended,
+        rules: {
+            'prettier/prettier': 'warn',
+        },
+        settings: {
+            react: {
+                version: 'detect',
+            },
+        },
     },
-  },
-  // {
-  // plugins: {
-  //   react: pluginReact,
-  //   jest: jest
-  // },
-  // },
-  // {
-  //   plugins: { jest },
-  //   rules: {
-  //     ...jest.configs.recommended.rules,
-  //   },
-  // },
-  // {
-  //   languageOptions: { globals: { ...globals.browser, ...globals.jest, } }
-  // },
-  // "plugins" : [pluginJs, pluginReact, jest],
-  pluginJs.configs.recommended,
-  pluginReact.configs.flat.recommended,
-  // jest.configs.recommended,
-  {
-    files: ['tests/**'],
-    ...jest.configs['flat/recommended'],
-    rules: {
-      ...jest.configs['flat/recommended'].rules,
-      'jest/prefer-expect-assertions': 'off',
+    {
+        files: ['src/**/*'],
+        languageOptions: {
+            globals: { ...globals.browser },
+        },
     },
-  },
+    {
+        files: ['**/tests/**/*.{js,mjs,cjs,jsx}', 'setupTests.js'],
+        ...jestPlugin.configs['flat/recommended'],
+        languageOptions: {
+            globals: {
+                ...globals.node,
+            },
+        },
+    },
 ];

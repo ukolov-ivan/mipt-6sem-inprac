@@ -3,4 +3,9 @@
 // expect(element).toHaveTextContent(/react/i)
 // learn more: https://github.com/testing-library/jest-dom
 import '@testing-library/jest-dom';
-import '@testing-library/jest-dom/extend-expect';
+
+if (process.env.DEBUG === 'jest') {
+    jest.setTimeout(5 * 60 * 1000);
+}
+
+global.IS_REACT_ACT_ENVIRONMENT = true;

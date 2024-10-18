@@ -1,176 +1,87 @@
-import { fireEvent, render, screen } from "@testing-library/react";
-import React from "react";
-import { Provider } from "react-redux";
-import { MemoryRouter } from "react-router-dom";
-import { toast } from "react-toastify";
-import configureStore from "redux-mock-store";
-import { reset } from "../../features/auth/authSlice";
-import RegisterPage from "../RegisterPage";
-jest.mock("react-toastify");
+import { render, act, screen } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
+import React from 'react';
+import { Provider } from 'react-redux';
+import { MemoryRouter } from 'react-router-dom';
+import { toast } from 'react-toastify';
+import authReducer, { register } from '../../features/auth/authSlice';
+import RegisterPage from '../RegisterPage';
+import { configureStore } from '@reduxjs/toolkit';
 
-const mockStore = configureStore([]);
+jest.mock('../../features/auth/authService');
+jest.mock('react-toastify');
 
-describe("RegisterPage", () => {
+describe('RegisterPage', () => {
     let store;
+    let user;
 
     beforeEach(() => {
-        store = mockStore({
-            auth: {
-                user: null,
-                isLoading: false,
-                isError: false,
-                isSuccess: false,
-                message: ""
-            }
-        });
-    });
+        user = userEvent.setup({ delay: null });
 
-    test("renders the registration form", () => {
+        store = configureStore({
+            reducer: {
+                auth: authReducer,
+            },
+        });
+
         render(
             <Provider store={store}>
                 <MemoryRouter>
                     <RegisterPage />
                 </MemoryRouter>
-            </Provider>
+            </Provider>,
         );
+    });
 
-        expect(screen.getAllByRole('button', { name: /Register/i })[0]).toBeInTheDocument();
-        expect(screen.getByLabelText(/Username/i)).toBeInTheDocument();
+    test('renders the registration form', () => {
+        expect(screen.getByLabelText(/username/i)).toBeInTheDocument();
         expect(screen.getByLabelText(/first name/i)).toBeInTheDocument();
         expect(screen.getByLabelText(/last name/i)).toBeInTheDocument();
         expect(screen.getByLabelText(/email address/i)).toBeInTheDocument();
-        // expect(screen.getByLabelText(/password/i)).toBeInTheDocument();
+        expect(screen.getByLabelText(/^password/i)).toBeInTheDocument();
         expect(screen.getByLabelText(/confirm password/i)).toBeInTheDocument();
+        expect(
+            screen.getByRole('button', { name: /register/i }),
+        ).toBeInTheDocument();
     });
 
-    test("displays error when passwords do not match", () => {
-        render(
-            <Provider store={store}>
-                <MemoryRouter>
-                    <RegisterPage />
-                </MemoryRouter>
-            </Provider>
+    test('displays error when passwords do not match', async () => {
+        await act(async () => {
+            await user.type(screen.getByLabelText(/username/i), 'testuser');
+            await user.type(screen.getByLabelText(/first name/i), 'Test');
+            await user.type(screen.getByLabelText(/last name/i), 'User');
+            await user.type(screen.getByLabelText(/email/i), 'test@test.com');
+            await user.type(screen.getByLabelText(/^password/i), 'password123');
+            await user.type(
+                screen.getByLabelText(/confirm password/i),
+                'differentPassword',
+            );
+            await user.click(screen.getByRole('button', { name: /register/i }));
+        });
+        expect(toast.error).toHaveBeenCalledWith('Passwords do not match');
+    });
+
+    test('dispatches register action on successful form submission', async () => {
+        const dispatchMock = jest.spyOn(store, 'dispatch');
+        await act(async () => {
+            await user.type(screen.getByLabelText(/username/i), 'testuser');
+            await user.type(screen.getByLabelText(/first name/i), 'Test');
+            await user.type(screen.getByLabelText(/last name/i), 'User');
+            await user.type(screen.getByLabelText(/email/i), 'test@example');
+            await user.type(screen.getByLabelText(/^password/i), 'password123');
+            await user.type(
+                screen.getByLabelText(/confirm password/i),
+                'password123',
+            );
+            await user.click(screen.getByRole('button', { name: /register/i }));
+        });
+
+        await dispatchMock.mock.results[1].value.then((result) =>
+            expect(result.type).toBe(`${register.fulfilled}`),
         );
 
-        fireEvent.change(screen.getByLabelText(/Username/i), { target: { value: "testuser" } });
-        fireEvent.change(screen.getByLabelText(/first name/i), { target: { value: "Test" } });
-        fireEvent.change(screen.getByLabelText(/last name/i), { target: { value: "User" } });
-        fireEvent.change(screen.getByLabelText(/email address/i), { target: { value: "test@example.com" } });
-        // fireEvent.change(screen.getByLabelText(/Password/i), { target: { value: "password123" } });
-        fireEvent.change(screen.getByLabelText(/Confirm Password/i), { target: { value: "differentPassword" } });
-        fireEvent.click(screen.getAllByText(/Register/i)[0]);
-        // fireEvent.click(screen.getByLabelText(/Register/i));
-
-        expect(toast.error).toHaveBeenCalledWith("Passwords do not match");
+        // store.subscribe(async () => {
+        //     expect(store.getState().auth).toBe({});
+        // });
     });
-
-    // test("dispatches register action on successful form submission", () => {
-    //     store = mockStore({
-    //         auth: {
-    //             user: null,
-    //             isLoading: false,
-    //             isError: false,
-    //             isSuccess: false,
-    //             message: "",
-    //         },
-    //     });
-
-    //     render(
-    //         <Provider store={store}>
-    //             <MemoryRouter>
-    //                 <RegisterPage />
-    //             </MemoryRouter>
-    //         </Provider>
-    //     );
-
-    //     fireEvent.change(screen.getByLabelText(/Username/i), { target: { value: "testuser" } });
-    //     fireEvent.change(screen.getByLabelText(/first name/i), { target: { value: "Test" } });
-    //     fireEvent.change(screen.getByLabelText(/last name/i), { target: { value: "User" } });
-    //     fireEvent.change(screen.getByLabelText(/email address/i), { target: { value: "test@example.com" } });
-    //     // fireEvent.change(screen.getByLabelText(/Password/i), { target: { value: "password123" } });
-    //     fireEvent.change(screen.getByLabelText(/Confirm password/i), { target: { value: "password123" } });
-
-    //     fireEvent.click(screen.getByRole("button", { name: /register/i }));
-
-    //     // const actions = store.getActions();
-    //     // expect(actions[0]).toEqual(register({
-    //     //     username: "testuser",
-    //     //     first_name: "Test",
-    //     //     last_name: "User",
-    //     //     email: "test@example.com",
-    //     //     password: "password123",
-    //     //     re_password: "password123"
-    //     // }));
-    //     const actions = store.getActions();
-    //     expect(actions).toEqual([
-    //         register({
-    //             username: "testuser",
-    //             first_name: "Test",
-    //             last_name: "User",
-    //             email: "test@example.com",
-    //             password: "password123",
-    //             re_password: "password123",
-    //         }),
-    //         // reset(),
-    //     ])
-    // });
-    store = mockStore({
-        auth: {
-            user: null,
-            isLoading: false,
-            isError: false,
-            isSuccess: false,
-            message: "",
-        },
-    });
-
-    const mockRegister = jest.fn().mockReturnValue(Promise.resolve());
-    const dispatchMock = jest.spyOn(store, 'dispatch');
-
-    render(
-        <Provider store={store}>
-            <MemoryRouter>
-                <RegisterPage />
-            </MemoryRouter>
-        </Provider>
-    );
-
-    // fireEvent.change(screen.getByLabelText(/username/i), { target: { value: "testuser" } });
-    // fireEvent.change(screen.getByLabelText(/first name/i), { target: { value: "Test" } });
-    // fireEvent.change(screen.getByLabelText(/last name/i), { target: { value: "User" } });
-    // fireEvent.change(screen.getByLabelText(/email address/i), { target: { value: "test@example.com" } });
-    // fireEvent.change(screen.getByLabelText(/password/i), { target: { value: "password123" } });
-    // fireEvent.change(screen.getByLabelText(/confirm password/i), { target: { value: "password123" } });
-
-    fireEvent.change(screen.getByLabelText(/Username/i), { target: { value: "testuser" } });
-    fireEvent.change(screen.getByLabelText(/first name/i), { target: { value: "Test" } });
-    fireEvent.change(screen.getByLabelText(/last name/i), { target: { value: "User" } });
-    fireEvent.change(screen.getByLabelText(/email address/i), { target: { value: "test@example.com" } });
-    // fireEvent.change(screen.getByLabelText(/Password/i), { target: { value: "password123" } });
-    fireEvent.change(screen.getByLabelText(/Confirm Password/i), { target: { value: "differentPassword" } });
-
-    // fireEvent.click(screen.getByRole("button", { name: /register/i }));
-
-    const actions = dispatchMock.mock.results[0].value;
-
-    expect(actions.type).toBe(`${reset.type}`);
-    // expect(dispatchMock).toHaveBeenCalledWith(register({
-    //     username: "testuser",
-    //     first_name: "Test",
-    //     last_name: "User",
-    //     email: "test@example.com",
-    //     password: "password123",
-    //     re_password: "password123"
-    // }));
-
-    // store.dispatch(register({
-    //     username: "testuser",
-    //     first_name: "Test",
-    //     last_name: "User",
-    //     email: "test@example.com",
-    //     password: "password123",
-    //     re_password: "password123"
-    // }));
-
-    // expect(dispatchMock).toHaveBeenCalledWith(register.pending.type);
 });

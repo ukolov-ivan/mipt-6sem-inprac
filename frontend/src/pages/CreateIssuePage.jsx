@@ -1,19 +1,20 @@
-import React, { useState } from "react";
-import { Button, Col, Container, Form, Row } from "react-bootstrap";
-import { useDispatch, useSelector } from "react-redux";
-import { useParams } from "react-router-dom";
-import { toast } from "react-toastify";
+import React, { useState } from 'react';
+import { Button, Col, Container, Form, Row } from 'react-bootstrap';
+import { useDispatch, useSelector } from 'react-redux';
+import { useParams } from 'react-router-dom';
+import { toast } from 'react-toastify';
 import Spinner from '../components/Spinner';
-import { createIssue } from "../features/projects/issueSlice";
-
+import { createIssue } from '../features/projects/issueSlice';
 
 const CreateIssuePage = () => {
     const { projectId } = useParams();
     const dispatch = useDispatch();
-    const { isLoading, isError, message } = useSelector((state) => state.projects);
+    const { isLoading, isError, message } = useSelector(
+        (state) => state.projects,
+    );
 
-    const [title, setTitle] = useState("");
-    const [description, setDescription] = useState("");
+    const [title, setTitle] = useState('');
+    const [description, setDescription] = useState('');
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -23,7 +24,7 @@ const CreateIssuePage = () => {
 
     React.useEffect(() => {
         if (isError) {
-            toast.error(message, { icon: "😭" });
+            toast.error(message, { icon: '😭' });
             // dispatch(reset());
         }
     }, [isError, message, dispatch]);
@@ -58,8 +59,12 @@ const CreateIssuePage = () => {
                             onChange={(e) => setDescription(e.target.value)}
                         />
                     </Form.Group>
-                    <Button variant="primary" type="submit" disabled={isLoading}>
-                        {isLoading ? "Creating..." : "Create Issue"}
+                    <Button
+                        variant="primary"
+                        type="submit"
+                        disabled={isLoading}
+                    >
+                        {isLoading ? 'Creating...' : 'Create Issue'}
                     </Button>
                 </Form>
             </Row>
