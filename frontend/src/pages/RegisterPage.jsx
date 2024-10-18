@@ -8,11 +8,11 @@ import { register, reset } from '../features/auth/authSlice';
 
 const RegisterPage = () => {
     const [username, setUsername] = useState('');
-    const [first_name, setFirstName] = useState('');
-    const [last_name, setLastName] = useState('');
+    const [firstName, setFirstName] = useState('');
+    const [lastName, setLastName] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const [re_password, setRePassword] = useState('');
+    const [rePassword, setRePassword] = useState('');
 
     const dispatch = useDispatch();
     const navigate = useNavigate();
@@ -37,16 +37,16 @@ const RegisterPage = () => {
     const submitHandler = (e) => {
         e.preventDefault();
 
-        if (password !== re_password) {
+        if (password !== rePassword) {
             toast.error('Passwords do not match');
         } else {
             const userData = {
                 username,
-                first_name,
-                last_name,
+                firstName,
+                lastName,
                 email,
                 password,
-                re_password,
+                rePassword,
             };
             dispatch(register(userData));
         }
@@ -76,22 +76,22 @@ const RegisterPage = () => {
                             />
                         </Form.Group>
 
-                        <Form.Group controlId="first_name">
+                        <Form.Group controlId="firstName">
                             <Form.Label>First Name</Form.Label>
                             <Form.Control
                                 type="name"
                                 placeholder="Enter First Name"
-                                value={first_name}
+                                value={firstName}
                                 onChange={(e) => setFirstName(e.target.value)}
                             />
                         </Form.Group>
 
-                        <Form.Group controlId="last_name">
+                        <Form.Group controlId="lastName">
                             <Form.Label>Last Name</Form.Label>
                             <Form.Control
                                 type="name"
                                 placeholder="Enter Last Name"
-                                value={last_name}
+                                value={lastName}
                                 onChange={(e) => setLastName(e.target.value)}
                             />
                         </Form.Group>
@@ -121,7 +121,7 @@ const RegisterPage = () => {
                             <Form.Control
                                 type="password"
                                 placeholder="Enter confirm Password"
-                                value={re_password}
+                                value={rePassword}
                                 onChange={(e) => setRePassword(e.target.value)}
                             />
                         </Form.Group>

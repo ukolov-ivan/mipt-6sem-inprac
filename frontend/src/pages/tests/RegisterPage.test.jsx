@@ -15,6 +15,43 @@ describe('RegisterPage', () => {
     let store;
     let user;
 
+    const inputLabels = {
+        username: /username/i,
+        firstName: /first name/i,
+        lastName: /last name/i,
+        email: /email address/i,
+        password: /^password/i,
+        rePassword: /confirm password/i,
+    };
+
+    const buttonNames = {
+        register: /register/i,
+    };
+
+    /** @param {import('../../features/auth/authService').RegisterUserDetails} userData */
+    const fillRegistrationForm = async (userData) => {
+        await act(async () => {
+            const userFields = [
+                { label: inputLabels.username, value: userData.username },
+                { label: inputLabels.firstName, value: userData.firstName },
+                { label: inputLabels.lastName, value: userData.lastName },
+                { label: inputLabels.email, value: userData.email },
+                { label: inputLabels.password, value: userData.password },
+                { label: inputLabels.rePassword, value: userData.rePassword },
+            ];
+
+            for (const field of userFields) {
+                await user.type(
+                    screen.getByLabelText(field.label),
+                    field.value,
+                );
+            }
+            await user.click(
+                screen.getByRole('button', { name: buttonNames.register }),
+            );
+        });
+    };
+
     beforeEach(() => {
         user = userEvent.setup({ delay: null });
 
@@ -34,47 +71,41 @@ describe('RegisterPage', () => {
     });
 
     test('renders the registration form', () => {
-        expect(screen.getByLabelText(/username/i)).toBeInTheDocument();
-        expect(screen.getByLabelText(/first name/i)).toBeInTheDocument();
-        expect(screen.getByLabelText(/last name/i)).toBeInTheDocument();
-        expect(screen.getByLabelText(/email address/i)).toBeInTheDocument();
-        expect(screen.getByLabelText(/^password/i)).toBeInTheDocument();
-        expect(screen.getByLabelText(/confirm password/i)).toBeInTheDocument();
+        Object.values(inputLabels).forEach((label) => {
+            expect(screen.getByLabelText(label)).toBeInTheDocument();
+        });
         expect(
-            screen.getByRole('button', { name: /register/i }),
+            screen.getByRole('button', { name: buttonNames.register }),
         ).toBeInTheDocument();
     });
 
     test('displays error when passwords do not match', async () => {
-        await act(async () => {
-            await user.type(screen.getByLabelText(/username/i), 'testuser');
-            await user.type(screen.getByLabelText(/first name/i), 'Test');
-            await user.type(screen.getByLabelText(/last name/i), 'User');
-            await user.type(screen.getByLabelText(/email/i), 'test@test.com');
-            await user.type(screen.getByLabelText(/^password/i), 'password123');
-            await user.type(
-                screen.getByLabelText(/confirm password/i),
-                'differentPassword',
-            );
-            await user.click(screen.getByRole('button', { name: /register/i }));
-        });
+        const userData = {
+            username: 'testuser',
+            firstName: 'Test',
+            lastName: 'User',
+            email: 'test@test.com',
+            password: 'password123',
+            rePassword: 'differentPassword',
+        };
+
+        await fillRegistrationForm(userData);
+
         expect(toast.error).toHaveBeenCalledWith('Passwords do not match');
     });
 
     test('dispatches register action on successful form submission', async () => {
         const dispatchMock = jest.spyOn(store, 'dispatch');
-        await act(async () => {
-            await user.type(screen.getByLabelText(/username/i), 'testuser');
-            await user.type(screen.getByLabelText(/first name/i), 'Test');
-            await user.type(screen.getByLabelText(/last name/i), 'User');
-            await user.type(screen.getByLabelText(/email/i), 'test@example');
-            await user.type(screen.getByLabelText(/^password/i), 'password123');
-            await user.type(
-                screen.getByLabelText(/confirm password/i),
-                'password123',
-            );
-            await user.click(screen.getByRole('button', { name: /register/i }));
-        });
+        const userData = {
+            username: 'testuser',
+            firstName: 'Test',
+            lastName: 'User',
+            email: 'test@example.com',
+            password: 'password123',
+            rePassword: 'password123',
+        };
+
+        await fillRegistrationForm(userData);
 
         await dispatchMock.mock.results[1].value.then((result) =>
             expect(result.type).toBe(`${register.fulfilled}`),

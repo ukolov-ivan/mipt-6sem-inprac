@@ -33,11 +33,6 @@ export const register = createAsyncThunk(
      */
     async (userData, thunkAPI) => {
         try {
-            // console.debug(2 + 2); // debug
-            // console.debug(authDebug); // debug
-            // console.debug(typeof authDebug); // debug
-            // console.debug(authService); // debug
-            // console.debug(typeof authService); // debug
             const result = await authService.register(userData);
             return result;
         } catch (error) {

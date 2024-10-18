@@ -56,25 +56,25 @@ describe('LoginPage', () => {
         // expect(toast.error).toHaveBeenCalledWith("A password must be provided");
     });
 
-    test('dispatches login action on successful form submission', () => {
-        // const mockLogin = jest.fn().mockReturnValue(Promise.resolve());
-        // const dispatchMock = jest.spyOn(store, "dispatch");
-        // render(
-        //     <Provider store={store}>
-        //         <MemoryRouter>
-        //             <LoginPage />
-        //         </MemoryRouter>
-        //     </Provider>
-        // );
-        // fireEvent.change(screen.getByLabelText(/Email address/i), { target: { value: "test@example.com" } });
-        // fireEvent.change(screen.getByText(/password/i), { target: { value: "password123" } });
-        // // fireEvent.click(screen.getByRole("button", { name: /sign In/i }));
-        // fireEvent.click(screen.getByText(/Sign in/i));
-        // expect(dispatchMock).toHaveBeenCalledWith(login({
-        //     email: "test@example.com",
-        //     password: "password123"
-        // }));
-    });
+    // test('dispatches login action on successful form submission', () => {
+    // const mockLogin = jest.fn().mockReturnValue(Promise.resolve());
+    // const dispatchMock = jest.spyOn(store, "dispatch");
+    // render(
+    //     <Provider store={store}>
+    //         <MemoryRouter>
+    //             <LoginPage />
+    //         </MemoryRouter>
+    //     </Provider>
+    // );
+    // fireEvent.change(screen.getByLabelText(/Email address/i), { target: { value: "test@example.com" } });
+    // fireEvent.change(screen.getByText(/password/i), { target: { value: "password123" } });
+    // // fireEvent.click(screen.getByRole("button", { name: /sign In/i }));
+    // fireEvent.click(screen.getByText(/Sign in/i));
+    // expect(dispatchMock).toHaveBeenCalledWith(login({
+    //     email: "test@example.com",
+    //     password: "password123"
+    // }));
+    // });
 
     // test("handles isLoading state and displays spinner", () => {
     //     store = mockStore({
