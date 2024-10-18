@@ -1,0 +1,13 @@
+{
+    "compilerOptions": {
+        "checkJs": true,
+        "jsx": "react",
+        // "allowSyntheticDefaultImports": true,
+        // "module": "es6",
+        // "outDir": "./dist/",
+    },
+    "exclude": [
+        "node_modules",
+        "**/node_modules/*"
+    ]
+}
