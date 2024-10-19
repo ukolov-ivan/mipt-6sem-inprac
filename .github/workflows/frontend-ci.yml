@@ -24,6 +24,10 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v4
 
+    - name: Echo workflow configuration
+      run: |
+        echo "Running on event:${{ github.event_name }} with inputs:${{ inputs }}"
+
     - name: Cache Docker layers
       uses: actions/cache@v3
       with:
