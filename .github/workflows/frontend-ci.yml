@@ -18,13 +18,13 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v4
 
-    # - name: Cache Docker layers
-    #   uses: actions/cache@v3
-    #   with:
-    #     path: /tmp/frontend-image.tar
-    #     key: ${{ runner.os }}-docker-${{ hashFiles('frontend/**') }}
-    #     restore-keys: |
-    #       ${{ runner.os }}-docker-
+    - name: Cache Docker layers
+      uses: actions/cache@v3
+      with:
+        path: /tmp/frontend-image.tar
+        key: ${{ runner.os }}-docker-${{ hashFiles('frontend/**') }}
+        restore-keys: |
+          ${{ runner.os }}-docker-
 
     - name: Set up Docker Buildx
       uses: docker/setup-buildx-action@v3
@@ -41,6 +41,30 @@ jobs:
       with:
         name: frontend-image
         path: /tmp/frontend-image.tar
+
+  debug-ci:
+    if: ${{ contains(github.event.head_commit.message, '[debug ci]') }}
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+  
+      - name: Download as an artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: frontend-image
+          path: /tmp
+          
+      - name: Load image
+        run: |
+          docker load --input /tmp/frontend-image.tar
+
+      - name: Setup tmate session
+        uses: mxschmitt/action-tmate@v3
+        with:
+          limit-access-to-actor: true
+        timeout-minutes: 15
 
   lint-format:
     runs-on: ubuntu-latest
@@ -62,6 +86,11 @@ jobs:
     - name: Lint and format
       run: |
         docker run --rm --volume ${{ github.workspace }}:/app --workdir /app/frontend ${{ github.repository_owner }}/frontend:latest npm run lint
+      continue-on-error: true
+
+    - name: Typecheck
+      run: |
+        docker run --rm --volume ${{ github.workspace }}:/app --workdir /app/frontend ${{ github.repository_owner }}/frontend:latest npm run typecheck
       continue-on-error: true
 
   test:
