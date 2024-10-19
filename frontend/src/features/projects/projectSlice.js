@@ -1,6 +1,13 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import projectAPIService from '../../api';
 
+// /**
+//  * @typedef {Object} ProjectState
+//  * @property {boolean} isError
+//  * @property {boolean} isLoading
+//  * @property {boolean} isSuccess
+//  * @property {string} message
+//  */
 const initialState = {
     projects: [],
     currentProject: null,

@@ -1,0 +1,17 @@
+{
+    "compilerOptions": {
+        "checkJs": true,
+        "allowJs": true,
+        "jsx": "react",
+        "module": "es6",
+        "moduleResolution": "node",
+        "skipLibCheck": true,
+        "outDir": "dist",
+    },
+    "include": [
+        "src/*",
+    ],
+    "exclude": [
+        "node_modules/*",
+    ],
+}

@@ -107,9 +107,9 @@ describe('RegisterPage', () => {
 
         await fillRegistrationForm(userData);
 
-        await dispatchMock.mock.results[1].value.then((result) =>
-            expect(result.type).toBe(`${register.fulfilled}`),
-        );
+        await dispatchMock.mock.results[1].value.then((result) => {
+            expect(result.type).toBe(`${register.fulfilled}`);
+        });
 
         // store.subscribe(async () => {
         //     expect(store.getState().auth).toBe({});
