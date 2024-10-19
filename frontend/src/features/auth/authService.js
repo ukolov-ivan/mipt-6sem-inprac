@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { toCamelCase, toSnakeCase } from './utils';
+
 const REGISTER_URL = '/api/v1/auth/users/';
 const LOGIN_URL = '/api/v1/auth/jwt/create/';
 

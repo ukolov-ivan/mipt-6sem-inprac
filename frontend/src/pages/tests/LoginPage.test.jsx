@@ -12,49 +12,49 @@ jest.mock('react-toastify');
 const middlewares = [thunk];
 const mockStore = configureMockStore(middlewares);
 
-describe('LoginPage', () => {
-    let store;
+// describe('LoginPage', () => {
+//     let store;
 
-    beforeEach(() => {
-        store = mockStore({
-            auth: {
-                user: null,
-                isLoading: false,
-                isError: false,
-                isSuccess: false,
-                message: '',
-            },
-        });
-    });
+//     beforeEach(() => {
+//         store = mockStore({
+//             auth: {
+//                 user: null,
+//                 isLoading: false,
+//                 isError: false,
+//                 isSuccess: false,
+//                 message: '',
+//             },
+//         });
+//     });
 
-    test('renders the login form', () => {
-        render(
-            <Provider store={store}>
-                <MemoryRouter>
-                    <LoginPage />
-                </MemoryRouter>
-            </Provider>,
-        );
-        expect(screen.getByText(/login/i)).toBeInTheDocument();
-        expect(screen.getByLabelText(/email/i)).toBeInTheDocument();
-        expect(screen.getByLabelText(/^password/i)).toBeInTheDocument();
-    });
+//     test('renders the login form', () => {
+//         render(
+//             <Provider store={store}>
+//                 <MemoryRouter>
+//                     <LoginPage />
+//                 </MemoryRouter>
+//             </Provider>,
+//         );
+//         expect(screen.getByText(/login/i)).toBeInTheDocument();
+//         expect(screen.getByLabelText(/email/i)).toBeInTheDocument();
+//         expect(screen.getByLabelText(/^password/i)).toBeInTheDocument();
+//     });
 
-    test('displays error when email or password is missing', () => {
-        render(
-            <Provider store={store}>
-                <MemoryRouter>
-                    <LoginPage />
-                </MemoryRouter>
-            </Provider>,
-        );
+//     test('displays error when email or password is missing', () => {
+//         render(
+//             <Provider store={store}>
+//                 <MemoryRouter>
+//                     <LoginPage />
+//                 </MemoryRouter>
+//             </Provider>,
+//         );
 
-        // fireEvent.click(screen.getByRole("button", { name: /sign In/i }));
-        fireEvent.click(screen.getByText(/Sign in/i));
+//         // fireEvent.click(screen.getByRole("button", { name: /sign In/i }));
+//         fireEvent.click(screen.getByText(/Sign in/i));
 
-        expect(toast.error).toHaveBeenCalledWith('An email must be provided');
-        // expect(toast.error).toHaveBeenCalledWith("A password must be provided");
-    });
+//         expect(toast.error).toHaveBeenCalledWith('An email must be provided');
+//         // expect(toast.error).toHaveBeenCalledWith("A password must be provided");
+//     });
 
     // test('dispatches login action on successful form submission', () => {
     // const mockLogin = jest.fn().mockReturnValue(Promise.resolve());

@@ -1,6 +1,4 @@
 # TODO -- mvoe me
-.vscode
-**.venv
+**.vscode
+**.code-workspace
 **downloads
-
-/scripts
