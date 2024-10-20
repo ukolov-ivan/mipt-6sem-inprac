@@ -1,15 +1,1 @@
-# Unit test / coverage reports
-htmlcov/
-.tox/
-.coverage
-.cache
-nosetests.xml
-coverage.xml
-
-# Django
-*.log
-*.pot
-*.pyc
-__pycache__/
-
-# TODO -- add regular environement files
+# TODO -- add regular environment files

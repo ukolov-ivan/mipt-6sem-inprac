@@ -1,14 +1,14 @@
+# pylint: disable=duplicate-code
+
 from django.contrib.auth import get_user_model
-from django.db import models
 from django.test import TestCase
 
-from .models import Comment, Contributorship, Issue, Project
+from .models import Contributorship, Issue, Project
 
 User = get_user_model()
 
 
 class ProjectModelTest(TestCase):
-
     def setUp(self):
         self.credentials = {
             "username": "testuser",
@@ -29,7 +29,6 @@ class ProjectModelTest(TestCase):
 
 
 class ContributorshipModelTest(TestCase):
-
     def setUp(self):
         self.credentials1 = {
             "username": "testuser1",
@@ -60,7 +59,6 @@ class ContributorshipModelTest(TestCase):
 
 
 class IssueModelTest(TestCase):
-
     def setUp(self):
         self.credentials1 = {
             "username": "testuser1",

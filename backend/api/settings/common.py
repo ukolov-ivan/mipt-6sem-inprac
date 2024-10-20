@@ -43,19 +43,21 @@ THIRD_PARTY_APPS = [
     "djoser",
     "rest_framework_simplejwt",
     "corsheaders",
+    "drf_spectacular",
+    "drf_spectacular_sidecar",
 ]
 
-
-CORS_ALLOWED_ORIGINS = ["http://localhost:8000", "http://localhost:3000"]
-CORS_ORIGIN_ALLOW_ALL = False
-CORS_ALLOW_HEADERS = "*"
 
 LOCAL_APPS = [
     "users",
     "projects",
 ]
 
-INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
+INSTALLED_APPS = DJANGO_APPS + LOCAL_APPS + THIRD_PARTY_APPS
+
+CORS_ALLOWED_ORIGINS = ["http://localhost:8000", "http://localhost:3000"]
+CORS_ORIGIN_ALLOW_ALL = False
+CORS_ALLOW_HEADERS = "*"
 
 MIDDLEWARE = [
     "corsheaders.middleware.CorsMiddleware",
@@ -146,7 +148,10 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 AUTH_USER_MODEL = "users.User"
 
-REST_FRAMEWORK = {"DEFAULT_AUTHENTICATION_CLASSES": ("rest_framework_simplejwt.authentication.JWTAuthentication",)}
+REST_FRAMEWORK = {
+    "DEFAULT_AUTHENTICATION_CLASSES": ["rest_framework_simplejwt.authentication.JWTAuthentication"],
+    "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
+}
 
 
 SIMPLE_JWT = {
@@ -179,4 +184,10 @@ DJOSER = {
         "current_user": "users.serializers.UserSerializer",
         "user_delete": "djoser.serializers.UserDeleteSerializer",
     },
+}
+
+SPECTACULAR_SETTINGS = {
+    "SWAGGER_UI_DIST": "SIDECAR",
+    "SWAGGER_UI_FAVICON_HREF": "SIDECAR",
+    "REDOC_DIST": "SIDECAR",
 }

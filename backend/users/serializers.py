@@ -10,6 +10,7 @@ from rest_framework import serializers
 User = get_user_model()
 
 
+# TODO -- deduplicate me
 class UserDetailSerializer(serializers.ModelSerializer):
     first_name = serializers.SerializerMethodField()
     last_name = serializers.SerializerMethodField()
@@ -31,7 +32,6 @@ class UserDetailSerializer(serializers.ModelSerializer):
 
 
 class UserSerializer(serializers.ModelSerializer):
-    # profile_photo = serializers.ImageField(source="profile.profile_photo")
     first_name = serializers.SerializerMethodField()
     last_name = serializers.SerializerMethodField()
 
@@ -43,8 +43,13 @@ class UserSerializer(serializers.ModelSerializer):
             "email",
             "first_name",
             "last_name",
-            # "profile_photo",
         ]
+
+    def get_first_name(self, obj):
+        return obj.first_name.title()
+
+    def get_last_name(self, obj):
+        return obj.last_name.title()
 
 
 class UserCreateSerializer(serializers.ModelSerializer):

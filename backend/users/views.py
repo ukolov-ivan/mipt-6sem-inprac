@@ -1,4 +1,5 @@
 from django.contrib.auth import get_user_model
+from drf_spectacular.utils import extend_schema, extend_schema_view
 from rest_framework import generics, permissions, views
 from rest_framework.response import Response
 
@@ -14,8 +15,10 @@ class UserDetailView(generics.RetrieveAPIView):
     lookup_field = "pkid"
 
 
+@extend_schema_view()
 class UserLoginTestView(views.APIView):
     permission_classes = [permissions.IsAuthenticated]
 
+    @extend_schema(exclude=True)
     def get(self, request):
         return Response({"message": "This is a protected endpoint for testing purposes"})
