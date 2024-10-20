@@ -133,7 +133,7 @@ jobs:
       run: |
         docker load --input /tmp/frontend-image.tar
     
-    # note -- Remove options if async issues will become solved locally
+    # todo -- remove forceExit if async issues will be solved locally
     - name: Run frontend tests
       run: |
         docker run --rm \
@@ -141,4 +141,4 @@ jobs:
           --volume /app/node_modules \
           --workdir /app/frontend \
           ${{ github.repository_owner }}/frontend:latest \
-          npm test -- --forceExit --detectOpenHandles
+          npm test -- --forceExit
