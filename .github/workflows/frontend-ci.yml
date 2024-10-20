@@ -19,16 +19,11 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-
     steps:
     - name: Checkout
       uses: actions/checkout@v4
 
-    - name: Echo workflow configuration
-      run: |
-        echo "Running on event:${{ github.event_name }} with inputs:{debug_enbled: ${{ inputs.debug_enabled }}}"
-
-    - name: Cache Docker layers
+    - name: Cache Docker image
       uses: actions/cache@v3
       with:
         path: /tmp/frontend-image.tar
@@ -39,21 +34,20 @@ jobs:
     - name: Set up Docker Buildx
       uses: docker/setup-buildx-action@v3
 
-    - name: Build and export
+    - name: Build and save the image
       uses: docker/build-push-action@v6
       with:
         tags: ${{ github.repository_owner }}/frontend:latest
         outputs: type=docker,dest=/tmp/frontend-image.tar
         file: frontend/Dockerfile
     
-    - name: Upload as an artifact
+    - name: Upload image as an artifact
       uses: actions/upload-artifact@v4
       with:
         name: frontend-image
         path: /tmp/frontend-image.tar
 
   debug-ci:
-    # if: ${{ contains(github.event.head_commit.message, '[debug ci]') }}
     if: ${{ github.event_name == 'workflow_dispatch' && inputs.debug_enabled }}
     runs-on: ubuntu-latest
     needs: build
@@ -61,7 +55,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
   
-      - name: Download as an artifact
+      - name: Download image as an artifact
         uses: actions/download-artifact@v4
         with:
           name: frontend-image
@@ -84,7 +78,7 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v4
 
-    - name: Download as an artifact
+    - name: Download image as an artifact
       uses: actions/download-artifact@v4
       with:
         name: frontend-image
@@ -103,7 +97,8 @@ jobs:
           ${{ github.repository_owner }}/frontend:latest \
           npm run lint
       continue-on-error: true
-      
+    
+      # todo -- remove continue-on-error when the entire project is typed
     - name: Typecheck
       run: |
         docker run --rm \
@@ -123,7 +118,7 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v4
 
-    - name: Download as an artifact
+    - name: Download image as an artifact
       uses: actions/download-artifact@v4
       with:
         name: frontend-image
@@ -137,8 +132,9 @@ jobs:
     - name: Run frontend tests
       run: |
         docker run --rm \
+          --env CI \
           --volume ${{ github.workspace }}:/app \
           --volume /app/node_modules \
           --workdir /app/frontend \
           ${{ github.repository_owner }}/frontend:latest \
-          npm test -- --forceExit
+          npm run test -- --forceExit
