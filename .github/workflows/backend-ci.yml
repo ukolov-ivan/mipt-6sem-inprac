@@ -39,7 +39,6 @@ jobs:
         restore-keys: |
           ${{ runner.os }}-docker-
 
-
     # - name: Setup environment variables
     #   run: |
     #     cd ./backend/
@@ -83,10 +82,14 @@ jobs:
       run: |
         docker load --input /tmp/backend-image.tar
 
+    # Prevent short-circuiting
     - name: Lint and format
       run: |
-        docker run --rm --volume ${{ github.workspace }}:/app --workdir /app/backend ${{ github.repository_owner }}/backend:latest bash -c "mypy .; pylint ."
-      continue-on-error: true
+        docker run --rm \
+          --volume ${{ github.workspace }}:/app \
+          --workdir /app/backend \
+          ${{ github.repository_owner }}/backend:latest \
+          bash -c "{ mypy . ; ret=$?; pylint . ; !((ret | $?)); }"
 
   test:
     runs-on: ubuntu-latest
@@ -106,4 +109,8 @@ jobs:
 
     - name: Run tests
       run: |
-        docker run --rm --volume ${{ github.workspace }}:/app --workdir /app/backend ${{ github.repository_owner }}/backend:latest pytest
+        docker run --rm \
+          --volume ${{ github.workspace }}:/app \
+          --workdir /app/backend \
+          ${{ github.repository_owner }}/backend:latest \
+          pytest

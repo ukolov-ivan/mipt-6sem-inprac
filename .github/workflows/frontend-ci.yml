@@ -93,7 +93,6 @@ jobs:
           --workdir /app/frontend \
           ${{ github.repository_owner }}/frontend:latest \
           npm run lint
-      continue-on-error: true
     
       # todo -- remove continue-on-error when the entire project is typed
     - name: Typecheck
