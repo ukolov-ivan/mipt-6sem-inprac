@@ -26,7 +26,7 @@ jobs:
 
     - name: Echo workflow configuration
       run: |
-        echo "Running on event:${{ github.event_name }} with inputs:${{ inputs }}"
+        echo "Running on event:${{ github.event_name }} with inputs:{debug_enbled: ${{ inputs.debug_enabled }}}"
 
     - name: Cache Docker layers
       uses: actions/cache@v3
@@ -96,12 +96,22 @@ jobs:
 
     - name: Lint and format
       run: |
-        docker run --rm --volume ${{ github.workspace }}:/app --workdir /app/frontend ${{ github.repository_owner }}/frontend:latest npm run lint
+        docker run --rm \
+          --volume ${{ github.workspace }}:/app \
+          --volume /app/node_modules \
+          --workdir /app/frontend \
+          ${{ github.repository_owner }}/frontend:latest \
+          npm run lint
       continue-on-error: true
-
+      
     - name: Typecheck
       run: |
-        docker run --rm --volume ${{ github.workspace }}:/app --workdir /app/frontend ${{ github.repository_owner }}/frontend:latest npm run typecheck
+        docker run --rm \
+          --volume ${{ github.workspace }}:/app \
+          --volume /app/node_modules \
+          --workdir /app/frontend \
+          ${{ github.repository_owner }}/frontend:latest \
+          npm run typecheck
       continue-on-error: true
 
   test:
@@ -123,4 +133,9 @@ jobs:
 
     - name: Run frontend tests
       run: |
-        docker run --rm --volume ${{ github.workspace }}:/app --workdir /app/frontend ${{ github.repository_owner }}/frontend:latest npm test
+        docker run --rm \
+          --volume ${{ github.workspace }}:/app \
+          --volume /app/node_modules \
+          --workdir /app/frontend \
+          ${{ github.repository_owner }}/frontend:latest \
+          npm test
