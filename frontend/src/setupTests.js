@@ -4,6 +4,10 @@
 // learn more: https://github.com/testing-library/jest-dom
 import '@testing-library/jest-dom';
 
+/**
+ * Set environmental variable DEBUG=jest in IDE when running in debug mode so
+ * tests won't fail on time limit
+ */
 if (process.env.DEBUG === 'jest') {
     jest.setTimeout(5 * 60 * 1000);
 }
