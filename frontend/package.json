@@ -32,7 +32,7 @@
         "test": "       react-scripts test",
         "eject": "      react-scripts eject",
         "lint": "       DEBUG=eslint:cli-engine,eslint:flat-eslint eslint .",
-        "typecheck": "  tsc --noEmit --skipLibCheck --project jsconfig.json"
+        "typecheck": "  tsc --noEmit --skipLibCheck --project jsconfig.jsonc"
     },
     "eslintConfig": {
         "extends": "react-app"
