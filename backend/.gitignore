@@ -6,11 +6,13 @@ htmlcov/
 nosetests.xml
 coverage.xml
 
-# Django
 *.log
 *.pot
 *.pyc
-__pycache__/
+__pycache__
+.mypy_cache
+.pytest_cache
+.ruff_cache
 
 db.sqlite3
 **.venv

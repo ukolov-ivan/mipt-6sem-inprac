@@ -14,6 +14,7 @@ RUN apt-get update \
 ENV PYTHONDONTWRITEBYTECODE=1
 ENV PYTHONUNBUFFERED=1
 
+# Install dependencies
 RUN pip3 install --upgrade pip
 COPY /backend/requirements.txt ./requirements.txt 
 RUN pip3 install -r requirements.txt
