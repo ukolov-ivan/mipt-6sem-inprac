@@ -1,0 +1,19 @@
+{
+    "forceConsistentCasingInFileNames": true, // Disallow inconsistently-cased references to the same file
+    "noImplicitReturns": true, // Report error when not all code paths in function return a value
+
+    "compilerOptions": {
+        "checkJs": true,
+        "allowJs": true,
+        "jsx": "react",
+        "skipLibCheck": true // note -- do not try to set it via cli
+        /**
+         * In case package doent have types and breaks typecheking
+         * set maxNodeModuleJsDepth to 0
+         * https://github.com/microsoft/TypeScript/issues/50862#issuecomment-1565175938
+         */
+        // "maxNodeModuleJsDepth": 0
+    },
+    "exclude": ["node_modules"],
+    "include": ["src"] // fixme -- Add test files here if restructured
+}

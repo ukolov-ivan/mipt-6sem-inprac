@@ -1,0 +1,21 @@
+[MASTER]
+; verbose=True ; doesn't work
+load-plugins=pylint_django
+fail-under=9.5
+django-settings-module=api.settings.development
+output-format=colorized
+ignore-paths=.mypy_cache,
+    .pytest_cache,
+    .ruff_cache,
+    __pypackages__,
+    .venv,
+    .*settings,
+    .*migrations,
+    manage.py,
+    users/managers.py, ; fixme -- remove this exclude when file is fixed
+
+[FORMAT]
+max-line-length=120
+
+[MESSAGES CONTROL]
+disable=missing-docstring,missing-module-docstring,too-many-ancestors,fixme

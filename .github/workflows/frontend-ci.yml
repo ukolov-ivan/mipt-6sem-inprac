@@ -1,0 +1,135 @@
+name: Frontend CI Pipeline
+
+on:
+  pull_request:
+    branches:
+      - master
+  push:
+    branches:
+      - master
+  workflow_call:
+  workflow_dispatch:
+    inputs:
+      debug_enabled:
+        type: boolean
+        description: 'Run the build with tmate debugging enabled (https://github.com/marketplace/actions/debugging-with-tmate)'
+        required: false
+        default: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Cache Docker image
+      uses: actions/cache@v3
+      with:
+        path: /tmp/frontend-image.tar
+        key: ${{ runner.os }}-docker-${{ hashFiles('frontend/**') }}
+        restore-keys: |
+          ${{ runner.os }}-docker-
+
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@v3
+
+    - name: Build and save the image
+      uses: docker/build-push-action@v6
+      with:
+        tags: ${{ github.repository_owner }}/frontend:latest
+        outputs: type=docker,dest=/tmp/frontend-image.tar
+        file: frontend/Dockerfile
+    
+    - name: Upload image as an artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: frontend-image
+        path: /tmp/frontend-image.tar
+
+  debug-ci:
+    if: ${{ github.event_name == 'workflow_dispatch' && inputs.debug_enabled }}
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Download image as an artifact
+      uses: actions/download-artifact@v4
+      with:
+        name: frontend-image
+        path: /tmp
+        
+    - name: Load image
+      run: |
+        docker load --input /tmp/frontend-image.tar
+
+    - name: Setup tmate session
+      uses: mxschmitt/action-tmate@v3
+      with:
+        limit-access-to-actor: true
+      timeout-minutes: 15
+
+  lint-format:
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Download image as an artifact
+      uses: actions/download-artifact@v4
+      with:
+        name: frontend-image
+        path: /tmp
+        
+    - name: Load image
+      run: |
+        docker load --input /tmp/frontend-image.tar
+
+    - name: Lint and format
+      run: |
+        docker run --rm \
+          --volume ${{ github.workspace }}:/app \
+          --volume /app/node_modules \
+          --workdir /app/frontend \
+          ${{ github.repository_owner }}/frontend:latest \
+          npm run lint
+    
+      # todo -- remove continue-on-error when the entire project is typed
+    - name: Typecheck
+      run: |
+        docker run --rm \
+          --volume ${{ github.workspace }}:/app \
+          --volume /app/node_modules \
+          --workdir /app/frontend \
+          ${{ github.repository_owner }}/frontend:latest \
+          npm run typecheck
+      continue-on-error: true
+
+  test:
+    runs-on: ubuntu-latest
+    needs: lint-format
+    env:
+      CI: true
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Download image as an artifact
+      uses: actions/download-artifact@v4
+      with:
+        name: frontend-image
+        path: /tmp
+
+    - name: Load image
+      run: |
+        docker load --input /tmp/frontend-image.tar
+    
+    # todo -- remove forceExit if async issues will be solved locally
+    - name: Run frontend tests
+      run: |
+        docker run --rm \
+          --env CI \
+          --volume ${{ github.workspace }}:/app \
+          --volume /app/node_modules \
+          --workdir /app/frontend \
+          ${{ github.repository_owner }}/frontend:latest \
+          npm run test -- --forceExit

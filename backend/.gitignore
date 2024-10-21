@@ -1,0 +1,18 @@
+# Unit test / coverage reports
+htmlcov/
+.tox/
+.coverage
+.cache
+nosetests.xml
+coverage.xml
+
+*.log
+*.pot
+*.pyc
+__pycache__
+.mypy_cache
+.pytest_cache
+.ruff_cache
+
+db.sqlite3
+**.venv
